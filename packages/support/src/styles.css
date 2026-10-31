@@ -1,0 +1,22 @@
+/* Breakpoints follow the available content width, including the web sidebar. */
+.support-desk {container-type:inline-size;overflow-wrap:anywhere}
+.support-desk .desk-layout {grid-template-columns:minmax(0,1fr)}
+.support-desk .desk-summary {grid-template-columns:repeat(2,minmax(0,1fr))}
+.support-desk .desk-summary>.card {padding:10px 12px;min-width:0}
+.support-desk .desk-tabs [role=tablist] {display:grid;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));max-width:none;overflow:visible}
+.support-desk .desk-tabs [role=tab] {height:auto;min-height:42px;white-space:normal;line-height:1.4;padding:8px 6px;font-size:13px;min-width:0}
+.support-desk .desk-tabs [role=tab]:nth-child(3):last-child {grid-column:1/-1}
+.support-desk[data-focused=true] .desk-overview,.support-desk[data-focused=true] .desk-summary,.support-desk[data-focused=true] .desk-tabs {display:none}
+.support-desk .desk-layout[data-selected=true] .desk-queue,.support-desk .desk-layout[data-selected=false] .desk-detail {display:none}
+.support-desk .desk-queue select {font-size:14px;padding-left:10px}
+@container(min-width:600px){
+  .support-desk .desk-summary {grid-template-columns:repeat(3,minmax(0,1fr))}
+  .support-desk .desk-tabs [role=tablist] {grid-template-columns:repeat(4,minmax(0,1fr))}
+  .support-desk .desk-tabs [role=tab]:nth-child(3):last-child {grid-column:auto}
+}
+@container(min-width:960px){
+  .support-desk .desk-layout {grid-template-columns:320px minmax(0,1fr)}
+  .support-desk[data-focused=true] .desk-overview,.support-desk[data-focused=true] .desk-tabs,.support-desk .desk-layout[data-selected=true] .desk-queue,.support-desk .desk-layout[data-selected=false] .desk-detail {display:block}
+  .support-desk[data-focused=true] .desk-summary {display:grid}
+  .support-desk .desk-summary {grid-template-columns:repeat(6,minmax(0,1fr))}
+}

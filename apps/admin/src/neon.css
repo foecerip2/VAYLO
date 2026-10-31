@@ -1,0 +1,213 @@
+/* ===== Тема «Violet Glass» веб-админки: тёмная, фиолетово-розовое свечение, стеклянные карточки, 3D-наклон ===== */
+html.neon {
+  --bg: 10 7 16;
+  --surface: 24 17 36;
+  --surface-2: 38 28 56;
+  --border: 66 52 94;
+  --text: 243 239 250;
+  --text-muted: 152 142 178;
+  --primary: 168 85 247;
+  --primary-2: 236 72 153;
+  --primary-fg: 255 255 255;
+  --accent: 34 211 160;
+  --success: 34 211 160;
+  --warning: 251 191 36;
+  --danger: 251 82 120;
+  --gradient-hero: linear-gradient(135deg, #d946ef 0%, #a855f7 50%, #7c3aed 100%);
+  --glass: rgba(255, 255, 255, .035);
+  --glass-line: rgba(255, 255, 255, .08);
+  color-scheme: dark;
+  font-family: 'Manrope', Inter, system-ui, sans-serif;
+}
+html.neon body {
+  background-color: #0a0710;
+  background-image:
+    radial-gradient(1000px 560px at 12% -10%, rgba(168, 85, 247, .26), transparent 62%),
+    radial-gradient(820px 520px at 100% 20%, rgba(236, 72, 153, .14), transparent 60%),
+    radial-gradient(700px 480px at 50% 110%, rgba(124, 58, 237, .14), transparent 60%);
+  background-attachment: fixed;
+}
+html.neon h1, html.neon .font-display { font-family: 'Unbounded', 'Manrope', sans-serif; letter-spacing: -.015em; font-weight: 800; }
+html.neon h2 { letter-spacing: -.005em; }
+
+/* ---------- Стеклянные карточки ---------- */
+html.neon .card {
+  background: linear-gradient(160deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .02));
+  border: 1px solid var(--glass-line);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .7), inset 0 1px 0 rgba(255, 255, 255, .05);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  transition: transform .45s cubic-bezier(.2, .8, .2, 1), box-shadow .3s, border-color .3s;
+}
+html.neon .card:hover { border-color: rgba(192, 132, 252, .22); box-shadow: 0 22px 50px -20px rgba(0, 0, 0, .8), 0 0 0 1px rgba(168, 85, 247, .08), 0 0 40px -12px rgba(168, 85, 247, .35); }
+html.neon .glass { background: rgba(14, 10, 22, .72); }
+
+/* ---------- 3D-наклон (класс .tilt, управляется fx/tilt.ts) ---------- */
+html.neon .tilt {
+  transform-style: preserve-3d;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  will-change: transform;
+}
+html.neon .tilt::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, .09), transparent 45%);
+  opacity: var(--glare, 0); transition: opacity .3s;
+}
+html.neon .tilt .z { transform: translateZ(28px); }
+html.neon .tilt.tilting { transition: transform .08s linear, box-shadow .3s, border-color .3s; }
+
+/* ---------- Кнопки и поля ---------- */
+html.neon button.bg-gradient-to-br { background-image: linear-gradient(120deg, #a855f7, #d946ef 55%, #ec4899); box-shadow: 0 8px 26px -8px rgba(217, 70, 239, .75), inset 0 1px 0 rgba(255, 255, 255, .25); }
+html.neon button.bg-gradient-to-br:hover { box-shadow: 0 10px 34px -6px rgba(217, 70, 239, .95), inset 0 1px 0 rgba(255, 255, 255, .3); }
+html.neon input, html.neon select, html.neon textarea { background-color: rgba(255, 255, 255, .04) !important; border-color: rgba(255, 255, 255, .1) !important; }
+html.neon input:focus, html.neon select:focus, html.neon textarea:focus { border-color: rgba(192, 132, 252, .6) !important; box-shadow: 0 0 0 4px rgba(168, 85, 247, .16), 0 0 24px -6px rgba(168, 85, 247, .6) !important; }
+html.neon select option { background: #1a1226; }
+
+/* ---------- Таблицы: строки-«пилюли» ---------- */
+html.neon table.vg { border-collapse: separate; border-spacing: 0 6px; }
+html.neon table.vg thead tr { background: transparent !important; border: 0 !important; }
+html.neon table.vg tbody tr { animation: vg-rise .5s cubic-bezier(.2, .8, .2, 1) backwards; }
+html.neon table.vg tbody td { background: rgba(22, 15, 33, .82); border-top: 1px solid var(--glass-line); border-bottom: 1px solid var(--glass-line); transition: background .2s; }
+html.neon table.vg tbody td:first-child { border-left: 1px solid var(--glass-line); border-radius: 12px 0 0 12px; }
+html.neon table.vg tbody td:last-child { border-right: 1px solid var(--glass-line); border-radius: 0 12px 12px 0; }
+html.neon table.vg tbody tr:hover td { background: rgba(48, 28, 72, .9); }
+html.neon .card:has(> div > table.vg) { background: transparent; border-color: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+html.neon thead { background: transparent; }
+html.neon tbody tr:hover { background: rgba(168, 85, 247, .07); }
+
+/* ---------- Верхняя навигация ---------- */
+.vg-pills { display: flex; gap: 2px; padding: 5px; border-radius: 999px; background: rgba(255, 255, 255, .04); border: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); position: relative; }
+.vg-pill { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; color: rgb(var(--text-muted)); font-weight: 600; font-size: 14px; white-space: nowrap; transition: color .25s; }
+.vg-pill:hover { color: rgb(var(--text)); }
+.vg-pill.on { color: #fff; }
+.vg-ind { position: absolute; z-index: 0; top: 5px; bottom: 5px; border-radius: 999px; background: linear-gradient(120deg, rgba(168, 85, 247, .32), rgba(236, 72, 153, .22)); box-shadow: inset 0 0 0 1px rgba(192, 132, 252, .55), 0 0 22px rgba(168, 85, 247, .45); transition: left .45s cubic-bezier(.2, .9, .25, 1.1), width .45s cubic-bezier(.2, .9, .25, 1.1), opacity .3s; }
+.vg-round { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 999px; background: rgba(255, 255, 255, .04); border: 1px solid var(--glass-line); color: rgb(var(--text-muted)); position: relative; transition: color .2s, border-color .2s, box-shadow .2s; }
+.vg-round:hover { color: #fff; border-color: rgba(192, 132, 252, .4); box-shadow: 0 0 18px -4px rgba(168, 85, 247, .6); }
+.vg-dot { position: absolute; top: 9px; right: 10px; width: 8px; height: 8px; border-radius: 9px; background: #ec4899; box-shadow: 0 0 10px #ec4899; animation: vg-blink 1.6s infinite; }
+.vg-menu { position: absolute; right: 0; top: calc(100% + 10px); z-index: 60; border-radius: 18px; padding: 10px; background: linear-gradient(160deg, #1e142e, #120c1c); border: 1px solid rgba(192, 132, 252, .2); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .9), 0 0 50px -20px rgba(168, 85, 247, .5); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); transform-origin: top right; animation: vg-pop .28s cubic-bezier(.2, .9, .3, 1.2) both; }
+.vg-menu a, .vg-menu button.item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; color: rgb(var(--text-muted)); font-weight: 600; font-size: 14px; width: 100%; text-align: left; transition: background .2s, color .2s; }
+.vg-menu a:hover, .vg-menu button.item:hover, .vg-menu a.on { background: rgba(168, 85, 247, .14); color: #fff; }
+.vg-menu a .ic { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: rgba(168, 85, 247, .14); color: #d8b4fe; flex: none; }
+
+/* ---------- Логотип с 3D-вращением ---------- */
+.vg-logo { width: 38px; height: 38px; perspective: 300px; }
+.vg-logo i { display: block; width: 100%; height: 100%; border-radius: 12px; background: conic-gradient(from 210deg, #a855f7, #ec4899, #7c3aed, #a855f7); box-shadow: 0 0 24px rgba(168, 85, 247, .7), inset 0 0 12px rgba(255, 255, 255, .3); animation: vg-spin3d 5s ease-in-out infinite; transform-style: preserve-3d; display: grid; place-items: center; color: #fff; }
+
+/* ---------- Переход страниц, появление ---------- */
+.vg-page { animation: vg-page .55s cubic-bezier(.2, .8, .2, 1) backwards; }
+.vg-stagger > * { animation: vg-rise .7s cubic-bezier(.2, .8, .2, 1) backwards; }
+.vg-stagger > *:nth-child(2) { animation-delay: 70ms; } .vg-stagger > *:nth-child(3) { animation-delay: 140ms; } .vg-stagger > *:nth-child(4) { animation-delay: 210ms; }
+.vg-stagger > *:nth-child(5) { animation-delay: 280ms; } .vg-stagger > *:nth-child(6) { animation-delay: 350ms; } .vg-stagger > *:nth-child(7) { animation-delay: 420ms; } .vg-stagger > *:nth-child(8) { animation-delay: 490ms; }
+
+/* сегментные полосы */
+.vg-seg { position: relative; height: 8px; flex: 1; border-radius: 9px; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .09) 0 4px, transparent 4px 7px); overflow: hidden; }
+.vg-seg i { position: absolute; inset: 0 auto 0 0; border-radius: 9px; -webkit-mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px); mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 7px); animation: vg-fill 1.3s cubic-bezier(.2, .8, .2, 1) both; transform-origin: left; }
+.vg-live { width: 8px; height: 8px; border-radius: 9px; flex: none; animation: vg-blink 2s infinite; }
+
+.vg-tip { background: rgba(20, 14, 32, .94); border: 1px solid rgba(192, 132, 252, .3); border-radius: 12px; padding: 8px 12px; font-size: 12.5px; box-shadow: 0 12px 30px -10px rgba(0, 0, 0, .8), 0 0 24px -8px rgba(168, 85, 247, .6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.vg-chart path.recharts-curve.recharts-area-curve { filter: drop-shadow(0 0 6px currentColor); }
+
+@keyframes vg-rise { from { opacity: 0; transform: translateY(16px) scale(.985); } }
+@keyframes vg-page { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } }
+@keyframes vg-pop { from { opacity: 0; transform: scale(.92) translateY(-6px); } }
+@keyframes vg-fill { from { transform: scaleX(0); } }
+@keyframes vg-blink { 50% { opacity: .35; } }
+@keyframes vg-spin3d { 0%, 100% { transform: rotateY(-28deg) rotateX(12deg); } 50% { transform: rotateY(28deg) rotateX(-12deg); } }
+
+html.neon ::-webkit-scrollbar { width: 10px; height: 10px; }
+html.neon ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, .35); border-radius: 8px; }
+html.neon ::-webkit-scrollbar-track { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vg-page, .vg-stagger > *, html.neon table.vg tbody tr, .vg-seg i, .vg-logo i, .vg-dot, .vg-live { animation: none !important; }
+  html.neon .tilt { transform: none !important; }
+}
+
+/* телефон/планшет: без видимых полос прокрутки (вкладки, чипы и таблицы прокручиваются свайпом) */
+@media (max-width: 1023px) {
+  html.neon ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  html.neon * { scrollbar-width: none; }
+}
+
+/* =====================================================================
+   СВЕТЛАЯ ТЕМА (переключатель в шапке). Те же токены, светлые поверхности, мягкие тени вместо свечения.
+   ===================================================================== */
+html.neon[data-theme='light'] {
+  --bg: 247 245 253;
+  --surface: 255 255 255;
+  --surface-2: 241 237 252;
+  --border: 224 217 243;
+  --text: 28 20 48;
+  --text-muted: 99 90 128;
+  --primary: 124 58 237;
+  --primary-2: 219 39 119;
+  --primary-fg: 255 255 255;
+  --accent: 5 150 105;
+  --success: 5 150 105;
+  --warning: 180 83 9;
+  --danger: 220 38 38;
+  --glass: rgba(255, 255, 255, .7);
+  --glass-line: rgba(76, 29, 149, .12);
+  color-scheme: light;
+}
+html.neon[data-theme='light'] body {
+  background-color: #f7f5fd;
+  background-image:
+    radial-gradient(900px 520px at 10% -12%, rgba(168, 85, 247, .16), transparent 62%),
+    radial-gradient(760px 480px at 100% 15%, rgba(236, 72, 153, .09), transparent 60%);
+}
+html.neon[data-theme='light'] .card {
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 1px 2px rgba(60, 30, 120, .06), 0 14px 34px -18px rgba(76, 29, 149, .22);
+}
+html.neon[data-theme='light'] .card:hover { border-color: rgba(124, 58, 237, .28); box-shadow: 0 1px 2px rgba(60, 30, 120, .06), 0 18px 40px -16px rgba(124, 58, 237, .3); }
+html.neon[data-theme='light'] .glass { background: rgba(255, 255, 255, .8); }
+html.neon[data-theme='light'] .tilt::after { background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(124, 58, 237, .07), transparent 45%); }
+html.neon[data-theme='light'] input, html.neon[data-theme='light'] select, html.neon[data-theme='light'] textarea { background-color: #fff !important; border-color: rgba(76, 29, 149, .18) !important; color: rgb(var(--text)); }
+html.neon[data-theme='light'] input:focus, html.neon[data-theme='light'] select:focus, html.neon[data-theme='light'] textarea:focus { border-color: rgba(124, 58, 237, .65) !important; box-shadow: 0 0 0 4px rgba(124, 58, 237, .14) !important; }
+html.neon[data-theme='light'] select option { background: #fff; color: #1c1430; }
+html.neon[data-theme='light'] table.vg tbody td { background: rgba(255, 255, 255, .92); }
+html.neon[data-theme='light'] table.vg tbody tr:hover td { background: #f3edff; }
+html.neon[data-theme='light'] tbody tr:hover { background: rgba(124, 58, 237, .05); }
+html.neon[data-theme='light'] .vg-round { background: rgba(255, 255, 255, .8); }
+html.neon[data-theme='light'] .vg-round:hover { color: rgb(var(--primary)); box-shadow: 0 6px 18px -8px rgba(124, 58, 237, .5); }
+html.neon[data-theme='light'] .vg-menu { background: #fff; border-color: rgba(124, 58, 237, .18); box-shadow: 0 24px 50px -20px rgba(76, 29, 149, .35); }
+html.neon[data-theme='light'] .vg-menu a:hover, html.neon[data-theme='light'] .vg-menu button.item:hover, html.neon[data-theme='light'] .vg-menu a.on { background: rgba(124, 58, 237, .09); color: rgb(var(--primary)); }
+html.neon[data-theme='light'] .vg-menu a .ic { background: rgba(124, 58, 237, .1); color: rgb(var(--primary)); }
+html.neon[data-theme='light'] .vg-tip { background: rgba(255, 255, 255, .97); border-color: rgba(124, 58, 237, .25); box-shadow: 0 12px 28px -12px rgba(76, 29, 149, .4); }
+html.neon[data-theme='light'] .vg-seg { background: repeating-linear-gradient(90deg, rgba(76, 29, 149, .12) 0 4px, transparent 4px 7px); }
+html.neon[data-theme='light'] .vg-chart path.recharts-curve.recharts-area-curve { filter: drop-shadow(0 2px 4px currentColor); }
+html.neon[data-theme='light'] ::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, .3); }
+html.neon[data-theme='light'] button.bg-gradient-to-br { box-shadow: 0 8px 22px -10px rgba(124, 58, 237, .8), inset 0 1px 0 rgba(255, 255, 255, .3); }
+
+/* ---------- Боковое меню ---------- */
+.vg-side { position: fixed; inset: 0 auto 0 0; z-index: 45; display: none; flex-direction: column; gap: 6px; padding: 14px 12px; width: 264px; border-right: 1px solid var(--glass-line); background: rgb(var(--bg) / .72); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); transition: width .32s cubic-bezier(.2, .8, .2, 1); overflow-y: auto; overflow-x: hidden; }
+@media (min-width: 1024px) { .vg-side { display: flex; } }
+.vg-side.collapsed { width: 76px; }
+.vg-side .grp { padding: 14px 12px 4px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgb(var(--text-muted) / .75); white-space: nowrap; transition: opacity .2s; }
+.vg-side.collapsed .grp { opacity: 0; height: 10px; padding: 0; overflow: hidden; }
+.vg-link { position: relative; display: flex; align-items: center; gap: 12px; height: 42px; padding: 0 12px; border-radius: 12px; color: rgb(var(--text-muted)); font-weight: 600; font-size: 14px; white-space: nowrap; transition: background .2s, color .2s; flex: none; }
+.vg-link svg { flex: none; }
+.vg-link span.t { overflow: hidden; text-overflow: ellipsis; transition: opacity .2s; }
+.vg-side.collapsed .vg-link { justify-content: center; padding: 0; }
+.vg-side.collapsed .vg-link span.t { display: none; }
+.vg-link:hover { background: rgba(168, 85, 247, .12); color: rgb(var(--text)); }
+.vg-link.on { color: rgb(var(--text)); background: linear-gradient(120deg, rgba(168, 85, 247, .3), rgba(236, 72, 153, .2)); box-shadow: inset 0 0 0 1px rgba(192, 132, 252, .45), 0 0 20px -6px rgba(168, 85, 247, .5); }
+html.neon[data-theme='light'] .vg-link.on { color: rgb(var(--primary)); background: linear-gradient(120deg, rgba(124, 58, 237, .14), rgba(219, 39, 119, .09)); box-shadow: inset 0 0 0 1px rgba(124, 58, 237, .3); }
+.vg-main { transition: padding-left .32s cubic-bezier(.2, .8, .2, 1); }
+@media (min-width: 1024px) { .vg-main { padding-left: 264px; } .vg-main.collapsed { padding-left: 76px; } }
+
+/* ---------- Скелетоны: мерцание в цвет темы ---------- */
+.vg-sk { position: relative; overflow: hidden; border-radius: 10px; background: rgb(var(--text) / .07); }
+.vg-sk::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgb(var(--text) / .08), transparent); animation: vg-shimmer 1.4s infinite; }
+@keyframes vg-shimmer { 100% { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .vg-sk::after { animation: none; } }
+
+/* ---------- Красный мигающий индикатор «требует внимания» ---------- */
+.vg-alert { position: absolute; top: 7px; right: 8px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 9px; display: grid; place-items: center; font-size: 10px; font-weight: 800; line-height: 1; color: #fff; background: #ef4444; box-shadow: 0 0 0 0 rgba(239, 68, 68, .7); animation: vg-alert-pulse 1.3s ease-out infinite; pointer-events: none; }
+.vg-alert.dot { width: 9px; min-width: 9px; height: 9px; padding: 0; }
+.vg-link .vg-alert, .vg-menu a .vg-alert { position: static; margin-left: auto; flex: none; }
+.vg-side.collapsed .vg-link .vg-alert { position: absolute; top: 6px; right: 8px; margin: 0; }
+@keyframes vg-alert-pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, .75); opacity: 1; } 50% { opacity: .55; } 70% { box-shadow: 0 0 0 9px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .vg-alert { animation: none !important; } }

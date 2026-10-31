@@ -1,0 +1,13 @@
+{
+  "name": "@vpn/support",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.tsx",
+  "types": "src/index.tsx",
+  "exports": {".": "./src/index.tsx", "./styles.css": "./src/styles.css"},
+  "scripts": {"typecheck": "tsc -p tsconfig.json"},
+  "dependencies": {"@vpn/ui": "workspace:*", "@vpn/shared": "workspace:*", "@tanstack/react-query": "^5.59.0", "react-router-dom": "^6.27.0", "lucide-react": "^0.460.0"},
+  "peerDependencies": {"react": "^18.3.0", "react-dom": "^18.3.0"},
+  "devDependencies": {"@types/react": "^18.3.0", "@types/react-dom": "^18.3.0", "react": "^18.3.1", "react-dom": "^18.3.1", "typescript": "^5.6.0"}
+}

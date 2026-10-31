@@ -1,0 +1,27 @@
+.vpn-chat{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;height:calc(100dvh - 180px);overflow:hidden;isolation:isolate;border:1px solid rgb(var(--border));border-radius:22px;background:rgb(var(--bg));color:rgb(var(--text));font-family:inherit}
+.vpn-chat[data-mobile=true]{position:fixed;inset:0;z-index:45;height:100dvh;border:0;border-radius:0;padding-top:env(safe-area-inset-top,0px)}
+.vpn-chat-header{display:flex;flex:none;align-items:center;gap:6px;min-width:0;min-height:64px;padding:8px;border-bottom:1px solid rgb(var(--border)/.6);background:rgb(var(--surface))}
+.vpn-chat-title{display:block;min-width:0;flex:1;text-align:left;background:transparent;border:0;padding:0;color:inherit;cursor:pointer}
+.vpn-chat-title strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;line-height:21px;font-weight:750}
+.vpn-chat-title small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;line-height:18px;color:rgb(var(--text-muted))}
+.vpn-chat-icon{display:grid;place-items:center;flex:none;width:44px;height:44px;min-width:44px;border:0;border-radius:14px;background:transparent;color:rgb(var(--text-muted));cursor:pointer;padding:0}
+.vpn-chat-icon:disabled{opacity:.4;cursor:default}
+.vpn-chat-icon:focus-visible,.vpn-chat-title:focus-visible{outline:2px solid rgb(var(--primary));outline-offset:1px}
+.vpn-chat-body{position:relative;flex:1;min-height:0;min-width:0;overflow:hidden}
+.vpn-chat-messages{height:100%;width:100%;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;overflow-anchor:none;padding:12px;scrollbar-gutter:stable}
+.vpn-chat-messages>*+*{margin-top:12px}
+.vpn-chat-messages p,.vpn-chat-messages .desk-system-message{overflow-wrap:anywhere}
+.vpn-chat-new{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;min-height:40px;padding:8px 12px;white-space:nowrap;border:1px solid rgb(var(--border));border-radius:24px;background:rgb(var(--surface));color:rgb(var(--primary));box-shadow:0 4px 18px #0002;font-size:12px;font-weight:700;cursor:pointer}
+.vpn-chat-composer{flex:none;min-width:0;padding:8px;padding-bottom:max(8px,env(safe-area-inset-bottom,0px));border-top:1px solid rgb(var(--border)/.6);background:rgb(var(--surface))}
+.vpn-chat-input-row{display:flex;align-items:flex-end;gap:4px;min-width:0}
+.vpn-chat-input-row textarea{display:block;flex:1;min-width:0;min-height:44px;max-height:88px;resize:none;overflow-y:auto;border:1px solid rgb(var(--border)/.65);border-radius:17px;background:rgb(var(--surface-2));color:rgb(var(--text));font-weight:500;font-family:inherit;font-size:16px;line-height:22px;padding:10px 12px;outline:0}
+.vpn-chat-input-row textarea:focus{border-color:rgb(var(--primary)/.5)}
+.vpn-chat-send{background:var(--button-gradient,linear-gradient(115deg,#7142c8,#5429ad));color:#fff}
+.vpn-chat-drafts{display:flex;align-items:center;gap:6px;min-height:44px;margin-bottom:6px;background:transparent;border:0;padding:0 4px;color:rgb(var(--text-muted));font-size:12px;cursor:pointer}
+.vpn-chat-drafts img{display:block;height:38px;width:38px;object-fit:cover;border:1px solid rgb(var(--border));border-radius:8px}
+.vpn-chat-done{min-height:44px;width:100%;border:0;border-radius:15px;padding:10px 16px;font-family:inherit;font-weight:600;font-size:15px;line-height:22px;color:#fff;background:var(--button-gradient,linear-gradient(115deg,#7142c8,#5429ad));cursor:pointer}
+.vpn-chat[data-short=true] .vpn-chat-input-row textarea{max-height:52px}
+.vpn-chat-sending{width:18px;height:18px;border:2px solid #ffffff60;border-top-color:#fff;border-radius:50%;animation:vpn-chat-spin .7s linear infinite}
+.vpn-chat-notice{flex:none;border-top:1px solid rgb(var(--border));padding:8px 12px;background:rgb(var(--surface));font-size:12px;line-height:18px;color:rgb(var(--text-muted))}
+@keyframes vpn-chat-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.vpn-chat-sending{animation:none}}

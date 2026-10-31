@@ -1,0 +1,114 @@
+@import './chat.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Токены «Calm Security» (RGB-триплеты для alpha-модификаторов Tailwind) ===== */
+:root {
+  --bg: 246 247 251;
+  --surface: 255 255 255;
+  --surface-2: 238 240 246;
+  --border: 226 229 238;
+  --text: 14 17 32;
+  --text-muted: 91 98 120;
+  --primary: 91 91 247;
+  --primary-fg: 255 255 255;
+  --primary-2: 155 91 247;
+  --accent: 34 211 238;
+  /* Светлая тема: смысловые цвета проходят контраст WCAG AA (≥4.5:1) как текст на белом и сером фоне */
+  --success: 4 120 87;
+  --warning: 168 77 5;
+  --danger: 200 35 45;
+  --gradient-hero: linear-gradient(135deg, rgb(var(--primary)) 0%, rgb(var(--primary-2)) 55%, rgb(var(--accent)) 100%);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --bg: 11 13 20;
+  --surface: 20 24 38;
+  --surface-2: 28 33 51;
+  --border: 38 44 64;
+  --text: 242 244 250;
+  --text-muted: 138 146 171;
+  --primary: 124 124 255;
+  --success: 50 213 131;
+  --warning: 253 176 34;
+  --danger: 255 99 105;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --bg: 11 13 20; --surface: 20 24 38; --surface-2: 28 33 51; --border: 38 44 64;
+    --text: 242 244 250; --text-muted: 138 146 171; --primary: 124 124 255; --success: 50 213 131; --warning: 253 176 34; --danger: 255 99 105;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+    background-image:
+      radial-gradient(900px 480px at 8% -8%, rgb(var(--primary) / .10), transparent 60%),
+      radial-gradient(700px 420px at 100% 0%, rgb(var(--accent) / .08), transparent 55%);
+    background-attachment: fixed;
+    font-variant-numeric: tabular-nums;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1, h2, h3 { line-height: 1.2; }
+  *:focus-visible { outline: 2px solid rgb(var(--primary)); outline-offset: 2px; border-radius: 8px; }
+  ::selection { background: rgb(var(--primary) / .3); }
+}
+
+@layer components {
+  .card { @apply rounded-card border border-border/80 bg-surface shadow-card transition-shadow duration-200; }
+  a.card:hover, button.card:hover { box-shadow: 0 2px 4px rgba(16,24,40,.06), 0 12px 28px rgb(var(--primary) / .12); }
+  .chip { @apply inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-3 py-1 text-xs font-medium text-muted; }
+  .gradient-text { background: var(--gradient-hero); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .blob { animation: float 9s ease-in-out infinite; }
+  .num { font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  .glass {
+    background: color-mix(in srgb, rgb(var(--surface)) 70%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  :root[data-theme='dark'] .card { box-shadow: 0 0 0 1px rgb(var(--border)), 0 8px 24px rgba(0, 0, 0, .25); }
+  .hero-bg { background: var(--gradient-hero); background-size: 140% 140%; }
+  .skeleton { @apply relative overflow-hidden rounded-input bg-surface-2; }
+  .skeleton::after { content: ''; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgb(var(--surface) / .6), transparent); animation: shimmer 1.4s infinite; }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+/* ===== v2: полировка (доступность, плотность, прокрутка) ===== */
+@layer components {
+  /* Касание ≥44px на сенсорных экранах */
+  @media (pointer: coarse) {
+    button, [role='button'], select, input:not([type='checkbox']):not([type='radio']), summary { min-height: 44px; }
+    .chip { min-height: 32px; }
+  }
+  /* Фокус виден и на тёмном, и на светлом фоне */
+  *:focus-visible { outline: 2px solid rgb(var(--primary)); outline-offset: 2px; box-shadow: 0 0 0 4px rgb(var(--primary) / .18); }
+  /* Скроллбары в тон интерфейса (десктоп админки) */
+  @media (pointer: fine) {
+    * { scrollbar-width: thin; scrollbar-color: rgb(var(--text-muted) / .35) transparent; }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-thumb { background: rgb(var(--text-muted) / .3); border-radius: 999px; border: 3px solid transparent; background-clip: content-box; }
+    *::-webkit-scrollbar-thumb:hover { background: rgb(var(--text-muted) / .5); background-clip: content-box; border: 3px solid transparent; }
+  }
+  /* Таблицы: читаемая плотность, «липкая» шапка, подсветка строки */
+  table { border-collapse: collapse; }
+  table thead th { position: sticky; top: 0; font-weight: 600; letter-spacing: .02em; white-space: nowrap; }
+  table tbody tr { transition: background-color .15s; }
+  table tbody tr:hover { background: rgb(var(--primary) / .06); }
+  /* Единый ритм заголовков */
+  .vg-page h1 { letter-spacing: -.02em; text-wrap: balance; }
+  p, li { text-wrap: pretty; }
+}
+
+@keyframes float { 0%, 100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-14px, 10px) scale(1.06); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

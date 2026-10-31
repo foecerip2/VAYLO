@@ -1,0 +1,118 @@
+name: vpn
+
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+
+x-api-env: &api-env
+  env_file: [.env]
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vpn-postgres
+    logging: *logging
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vpn
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD не задан в .env}
+      POSTGRES_DB: vpn
+      TZ: UTC
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vpn -d vpn"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    container_name: vpn-redis
+    logging: *logging
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    <<: *api-env
+    build: { context: .., dockerfile: deploy/Dockerfile, target: api }
+    image: vpn-api:local
+    container_name: vpn-api
+    logging: *logging
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks: [default, remnawave]
+
+  worker:
+    <<: *api-env
+    image: vpn-api:local
+    container_name: vpn-worker
+    logging: *logging
+    command: ["node", "dist/worker.js"]
+    # healthcheck не задан: у воркера нет HTTP-порта, а проверка «процесс жив» ничего не добавляет к restart-политике
+    depends_on:
+      api: { condition: service_healthy }
+    networks: [default, remnawave]
+
+  bot:
+    <<: *api-env
+    build: { context: .., dockerfile: deploy/Dockerfile, target: bot }
+    image: vpn-bot:local
+    container_name: vpn-bot
+    logging: *logging
+    depends_on:
+      api: { condition: service_healthy }
+    # В режиме webhook бот слушает :3001 (GET /health). В режиме long polling (WEBHOOK_URL пуст)
+    # HTTP-сервера нет — тогда проверка считает контейнер здоровым, пока процесс жив.
+    healthcheck:
+      test: ["CMD", "node", "-e", "if(!process.env.WEBHOOK_URL)process.exit(0);fetch('http://127.0.0.1:'+(process.env.PORT||'3001')+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  gateway:
+    build: { context: .., dockerfile: deploy/Dockerfile, target: gateway }
+    image: vpn-gateway:local
+    container_name: vpn-gateway
+    logging: *logging
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN:?}
+      ADMIN_DOMAIN: ${ADMIN_DOMAIN:?}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy.d:/etc/caddy/conf.d:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    # Без depends_on на api: шлюз обслуживает и панель/подписки Remnawave (caddy.d),
+    # они должны работать, даже если API не поднялся. Пока API нет, Caddy отдаёт 502 только на /api и /tg/webhook.
+    networks: [default, remnawave]
+
+networks:
+  remnawave:
+    name: remnawave-network
+    external: true
+
+volumes:
+  pgdata:
+  redisdata:
+  caddy-data:
+  caddy-config:

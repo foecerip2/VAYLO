@@ -1,0 +1,31 @@
+/* First-paint artwork: no image, video, canvas or runtime dependency. */
+#vaylo-launch{--launch-bg:#09090f;--launch-ink:#f3efff;--launch-muted:#9f95b7;--launch-accent:#a481ff;--launch-edge:#e4d4ff;--launch-glass:#a881ff12;--launch-glow:#7751f338;position:fixed;inset:0;z-index:9999;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,var(--launch-glow),transparent 58%),var(--launch-bg);color:var(--launch-ink);font-family:Manrope,system-ui,sans-serif;transition:opacity .22s ease,visibility .22s;isolation:isolate}
+html[data-design=arctic-glass] #vaylo-launch{--launch-bg:#f2f7ff;--launch-ink:#16315c;--launch-muted:#6680a7;--launch-accent:#377ce9;--launch-edge:#fff;--launch-glass:#ffffffaa;--launch-glow:#accdff50}
+#vaylo-launch *{box-sizing:border-box}
+#vaylo-launch[data-leaving=true]{opacity:0;visibility:hidden;pointer-events:none}
+#vaylo-launch[data-quiet=true] *{animation-play-state:paused}
+.launch-scene{width:min(100%,440px);padding:30px 22px;text-align:center;transform:translateY(-2vh)}
+.launch-orbits{display:block;width:min(72vw,300px);height:auto;overflow:visible;margin:0 auto 20px;filter:drop-shadow(0 0 9px var(--launch-glow))}
+.launch-ring{transform-origin:160px 160px;animation:launch-turn 5.4s cubic-bezier(.37,0,.63,1) infinite alternate}
+.launch-ring-b{animation-duration:6.5s;animation-direction:alternate-reverse}
+.launch-ring-c{animation-duration:7.8s}
+.launch-ring ellipse{fill:none;stroke:url(#launch-metal);stroke-width:3.5;stroke-dasharray:760;stroke-dashoffset:760;animation:launch-trace .68s cubic-bezier(.22,.7,.3,1) forwards}
+.launch-ring-b ellipse{stroke-width:2.2;animation-delay:.06s}.launch-ring-c ellipse{stroke-width:1.4;animation-delay:.12s}
+.launch-ring .launch-highlight{stroke:var(--launch-edge);stroke-width:1;opacity:.65}
+.launch-satellite{transform-origin:160px 160px;animation:launch-satellite 3s linear infinite}
+.launch-center{fill:var(--launch-glass);stroke:var(--launch-accent);stroke-opacity:.25}
+.launch-monogram{fill:none;stroke:url(#launch-mark);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:130;stroke-dashoffset:130;animation:launch-trace .5s ease .1s forwards}
+.launch-wordmark{font-size:clamp(27px,8vw,36px);font-weight:700;letter-spacing:.36em;padding-left:.36em;line-height:1.4;animation:launch-word .5s ease both}
+.launch-caption{margin:12px 0 0;font-size:10px;font-weight:500;letter-spacing:.22em;line-height:1.8;color:var(--launch-muted)}
+.launch-status{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:38px;font-size:12px;color:var(--launch-muted);line-height:1.5;letter-spacing:.02em}
+.launch-dots{display:flex;gap:4px}.launch-dots i{display:block;width:4px;height:4px;border-radius:50%;background:var(--launch-accent);animation:launch-pulse .85s ease-in-out infinite alternate}.launch-dots i:nth-child(2){animation-delay:.16s}.launch-dots i:nth-child(3){animation-delay:.32s}
+.launch-retry{margin-top:20px;border:1px solid var(--launch-accent);border-radius:16px;padding:12px 20px;background:var(--launch-glass);color:var(--launch-ink);font:600 14px/1.4 system-ui,sans-serif;cursor:pointer;min-height:44px}.launch-retry[hidden]{display:none}
+.launch-wait{display:grid;min-height:70dvh;place-items:center;text-align:center;padding:24px;color:rgb(var(--text-muted));font-size:13px}
+.launch-wait svg{display:block;width:52px;height:52px;margin:0 auto 18px;color:rgb(var(--primary))}
+@keyframes launch-trace{to{stroke-dashoffset:0}}
+@keyframes launch-turn{from{transform:rotate(-8deg)}to{transform:rotate(18deg)}}
+@keyframes launch-satellite{to{transform:rotate(360deg)}}
+@keyframes launch-word{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes launch-pulse{from{opacity:.25;transform:scale(.75)}to{opacity:1;transform:scale(1)}}
+@media(max-height:500px){.launch-scene{transform:none;padding:16px}.launch-orbits{width:min(42vh,190px);margin-bottom:6px}.launch-wordmark{font-size:23px}.launch-caption{margin-top:6px}.launch-status{margin-top:18px}}
+@media(prefers-reduced-motion:reduce){#vaylo-launch{transition:none}#vaylo-launch *{animation:none!important}.launch-ring ellipse,.launch-monogram{stroke-dashoffset:0}.launch-wordmark{opacity:1;transform:none}}

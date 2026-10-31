@@ -1,0 +1,19 @@
+@import '@vpn/ui/styles.css';
+@import './neon.css';
+@import './orbit.css';
+@import './design-system.css';
+@import '@vpn/support/styles.css';
+@import '@vpn/ui/orbit-plus.css';
+@import './design-v2.css';
+/* Administration screens can contain long names, notes and payment details. */
+.mini-admin .card,.mini-admin .grid>* {min-width:0}
+.mini-admin .truncate {white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+.mini-admin .card {overflow-wrap:anywhere}
+@media(max-width:639px){.mini-admin button{min-width:0}.mini-admin .mini-admin-actions>button{height:auto;min-height:44px;padding-top:10px;padding-bottom:10px;white-space:normal}}
+
+/* красный мигающий индикатор «требует внимания» */
+.alert-dot{display:inline-grid;place-items:center;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:#ef4444;color:#fff;font-size:10px;font-weight:800;line-height:1;box-shadow:0 0 0 0 rgba(239,68,68,.7);animation:alert-pulse 1.3s ease-out infinite}
+.alert-dot.sm{width:9px;min-width:9px;height:9px;padding:0}
+.alert-dot.abs{position:absolute;top:-4px;right:-7px}
+@keyframes alert-pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.75);opacity:1}50%{opacity:.55}70%{box-shadow:0 0 0 8px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.alert-dot{animation:none!important}}

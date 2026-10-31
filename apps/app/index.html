@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru" class="neon" data-design="orbit-signature" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#09090f" />
+    <script>try{if(localStorage.getItem('vaylo-miniapp-design-v1')==='arctic-glass'){document.documentElement.dataset.design='arctic-glass';document.documentElement.dataset.theme='light';document.documentElement.style.colorScheme='light';document.querySelector('meta[name="theme-color"]').content='#f2f7ff';}}catch(e){}</script>
+    <link rel="stylesheet" href="/launch.css" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>VAYLO · VPN</title>
+    <!-- async: вне Telegram (или при недоступном telegram.org) не блокирует отрисовку; код ждёт SDK через telegramReady() -->
+    <script id="tg-sdk" async src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <div id="vaylo-launch" role="status" aria-label="Открываем VAYLO">
+      <div class="launch-scene">
+        <svg class="launch-orbits" viewBox="0 0 320 320" aria-hidden="true">
+          <defs><linearGradient id="launch-metal" x1="20" y1="60" x2="275" y2="250" gradientUnits="userSpaceOnUse"><stop stop-color="var(--launch-edge)"/><stop offset=".2" stop-color="var(--launch-accent)"/><stop offset=".48" stop-color="var(--launch-edge)"/><stop offset=".68" stop-color="var(--launch-accent)"/><stop offset="1" stop-color="var(--launch-edge)"/></linearGradient><linearGradient id="launch-mark" x1="139" y1="136" x2="181" y2="184" gradientUnits="userSpaceOnUse"><stop stop-color="var(--launch-edge)"/><stop offset="1" stop-color="var(--launch-accent)"/></linearGradient><radialGradient id="launch-core"><stop stop-color="var(--launch-accent)" stop-opacity=".18"/><stop offset="1" stop-color="var(--launch-accent)" stop-opacity="0"/></radialGradient></defs>
+          <circle cx="160" cy="160" r="125" fill="url(#launch-core)"/>
+          <g class="launch-ring"><ellipse cx="160" cy="160" rx="130" ry="63" transform="rotate(-32 160 160)"/><ellipse class="launch-highlight" cx="160" cy="159" rx="127" ry="60" transform="rotate(-32 160 160)"/></g>
+          <g class="launch-ring launch-ring-b"><ellipse cx="160" cy="160" rx="130" ry="61" transform="rotate(34 160 160)"/></g>
+          <g class="launch-ring launch-ring-c"><ellipse cx="160" cy="160" rx="130" ry="66" transform="rotate(92 160 160)"/></g>
+          <g class="launch-satellite"><circle cx="273" cy="139" r="5" fill="var(--launch-edge)"/><circle cx="273" cy="139" r="10" fill="var(--launch-accent)" opacity=".12"/></g>
+          <circle class="launch-center" cx="160" cy="160" r="48"/><path class="launch-monogram" d="m141 139 19 41 19-41"/>
+        </svg>
+        <div class="launch-wordmark">VAYLO</div><p class="launch-caption">YOUR WORLD. NO LIMITS.</p>
+        <div class="launch-status"><span class="launch-dots" aria-hidden="true"><i></i><i></i><i></i></span><span id="launch-label">Открываем приложение</span></div>
+        <button id="launch-retry" class="launch-retry" hidden type="button">Повторить загрузку</button>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script>
+      (function(){
+        var startedAt=performance.now(),el=document.getElementById('vaylo-launch'),done=false,claimed=false,cap;
+        var retry=document.getElementById('launch-retry');retry.addEventListener('click',function(){location.reload();});
+        var quiet=setTimeout(function(){if(!done){el.dataset.quiet='true';document.getElementById('launch-label').textContent='Загружаем приложение…';}},1400);
+        var watchdog=setTimeout(function(){if(!claimed&&!done){document.getElementById('launch-label').textContent='Загрузка занимает больше времени';retry.hidden=false;}},8000);
+        function finish(){if(done)return;done=true;clearTimeout(cap);clearTimeout(quiet);clearTimeout(watchdog);el.dataset.leaving='true';setTimeout(function(){el.remove();},matchMedia('(prefers-reduced-motion: reduce)').matches?0:240);}
+        window.__vayloLaunch={startedAt:startedAt,finish:finish,claim:function(){if(claimed||done)return;claimed=true;clearTimeout(watchdog);cap=setTimeout(finish,Math.max(0,1400-(performance.now()-startedAt)));}};
+      })();
+    </script>
+    <noscript><style>#vaylo-launch{display:none}</style><p style="padding:24px;font-family:system-ui">Для работы VAYLO включите JavaScript и обновите страницу.</p></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

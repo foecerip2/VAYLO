@@ -1,0 +1,28 @@
+/* Orbit+ (v61): типографика, «стеклянные» карточки, плавные переходы, крупная кнопка подключения.
+   Только оформление — без изменения логики. Подключается последним слоем в Mini App и админке. */
+:root{--op-ease:cubic-bezier(.22,.8,.24,1);--op-glass:rgb(var(--surface)/.62);--op-line:rgb(var(--border)/.55)}
+body{font-feature-settings:'cv11','ss01','tnum' 0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{letter-spacing:-.022em;text-wrap:balance}
+p,li{text-wrap:pretty}
+/* стеклянные карточки */
+.card,.orbit-row,.orbit-stat,.orbit-step,.orbit-help{background:var(--op-glass);border-color:var(--op-line);-webkit-backdrop-filter:blur(16px) saturate(1.25);backdrop-filter:blur(16px) saturate(1.25);box-shadow:0 1px 0 rgb(255 255 255/.04) inset,0 10px 30px -18px rgb(0 0 0/.55)}
+.orbit-row,.orbit-stat,.card{transition:transform .28s var(--op-ease),box-shadow .28s var(--op-ease),border-color .2s,background .2s}
+@media (hover:hover){.orbit-row:hover,.orbit-stat:hover{transform:translateY(-2px);border-color:rgb(var(--primary)/.45);box-shadow:0 14px 34px -16px rgb(var(--primary)/.35)}}
+.orbit-row:active,.orbit-stat:active,button:active{transform:scale(.985)}
+/* крупная кнопка подключения */
+.orbit-cta{min-height:64px;font-size:17px;letter-spacing:-.01em;border-radius:22px;box-shadow:0 18px 40px -14px rgb(var(--primary)/.65),0 1px 0 rgb(255 255 255/.25) inset;transition:transform .25s var(--op-ease),box-shadow .25s var(--op-ease)}
+.orbit-cta:not(:disabled):active{transform:scale(.97)}
+@media (hover:hover){.orbit-cta:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 22px 48px -14px rgb(var(--primary)/.8),0 1px 0 rgb(255 255 255/.3) inset}}
+/* мастер «Не работает» */
+.orbit-diagnose{background:radial-gradient(ellipse at 100% 0%,rgb(var(--primary)/.16),transparent 62%),var(--op-glass)}
+.orbit-diagnose-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:16px;background:rgb(var(--primary)/.14);color:rgb(var(--primary))}
+/* плавное появление страниц и списков */
+@keyframes op-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main>*,.page-enter{animation:op-in .42s var(--op-ease) both}
+.vg-stagger>*{animation:op-in .45s var(--op-ease) both}
+.vg-stagger>*:nth-child(2){animation-delay:.04s}.vg-stagger>*:nth-child(3){animation-delay:.08s}.vg-stagger>*:nth-child(4){animation-delay:.12s}.vg-stagger>*:nth-child(5){animation-delay:.16s}.vg-stagger>*:nth-child(n+6){animation-delay:.2s}
+/* нижняя навигация и фокус */
+:focus-visible{outline:2px solid rgb(var(--primary));outline-offset:2px;border-radius:10px}
+::selection{background:rgb(var(--primary)/.3)}
+@media (prefers-reduced-motion:reduce){main>*,.page-enter,.vg-stagger>*{animation:none!important}.orbit-row,.orbit-stat,.card,.orbit-cta{transition:none!important}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.card,.orbit-row,.orbit-stat,.orbit-step,.orbit-help{background:rgb(var(--surface))}}

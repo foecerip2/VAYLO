@@ -1,0 +1,194 @@
+/* VAYLO A + C. All app surfaces use these tokens, including portalled sheets. */
+html.neon[data-design='orbit-signature'] {
+  --bg:9 9 15; --surface:20 20 31; --surface-2:30 29 45; --border:51 49 69;
+  --text:245 244 250; --text-muted:172 168 193; --primary:184 157 255; --primary-2:110 65 218;
+  --primary-fg:255 255 255; --success:112 224 176; --warning:255 199 102; --danger:255 133 143;
+  --glass-line:#c4b6ff20; --button-gradient:linear-gradient(115deg,#8050db,#6633cf 72%,#5730c1);
+  --gradient-hero:linear-gradient(125deg,#6340bc,#463095 72%,#3b3383);
+  --card-fill:linear-gradient(145deg,#1b1a28eb,#12121de8); --card-shadow:0 12px 35px #00000024;
+  --hero-glow:#7d4eea20; --design-line:#b8a2ff25; --design-nav:#14141feb;
+  --design-glow:#a27aff30; --design-wash:#b69aff12; --design-icon:#b69aff1a;
+  color-scheme:dark;
+}
+html.neon[data-design='arctic-glass'] {
+  --bg:242 247 255; --surface:255 255 255; --surface-2:231 239 252; --border:201 216 239;
+  --text:15 34 70; --text-muted:77 99 133; --primary:36 92 191; --primary-2:26 80 178;
+  --primary-fg:255 255 255; --success:9 114 76; --warning:142 84 0; --danger:182 42 63;
+  --glass-line:#aec6e866; --button-gradient:linear-gradient(115deg,#2b6bde,#1e59c6);
+  --gradient-hero:linear-gradient(125deg,#2967cf,#2356b3 72%,#254fa3);
+  --card-fill:linear-gradient(145deg,#ffffffee,#fafdffe0); --card-shadow:0 8px 30px #5c83b50b;
+  --hero-glow:#8ebaff29; --design-line:#96b9ed55; --design-nav:#ffffffeb;
+  --design-glow:#71a6f822; --design-wash:#3979ec0c; --design-icon:#3979ec13;
+  color-scheme:light;
+}
+html.neon[data-design] body {
+  background-color:rgb(var(--bg));
+  background-image:radial-gradient(ellipse at 85% 0%,var(--hero-glow),transparent 46%);
+  background-attachment:scroll;
+}
+html.neon[data-design='arctic-glass'] body {
+  background-image:radial-gradient(ellipse at 95% 6%,#b1d4ff45,transparent 42%),linear-gradient(155deg,#fbfdff,transparent 60%);
+}
+html.neon[data-design] .card {
+  background:var(--card-fill); border-color:var(--glass-line); border-radius:23px;
+  box-shadow:var(--card-shadow),inset 0 1px 0 #ffffff0a; backdrop-filter:none; -webkit-backdrop-filter:none;
+}
+html.neon[data-design='arctic-glass'] .card {box-shadow:var(--card-shadow),inset 0 1px 0 #fff}
+html.neon[data-design] .card.border-warning\/40 {background:rgb(var(--warning)/.07);border-color:rgb(var(--warning)/.4)}
+html.neon[data-design] .card.border-danger\/40 {background:rgb(var(--danger)/.07);border-color:rgb(var(--danger)/.4)}
+html.neon[data-design] h1,html.neon[data-design] h2,html.neon[data-design] h3,html.neon[data-design] .font-display {font-family:Manrope,system-ui,sans-serif}
+html.neon[data-design] .page-title {color:rgb(var(--text));background:none;font-size:clamp(29px,6.8vw,38px);letter-spacing:-.05em}
+html.neon[data-design] input:not([type=radio]):not([type=checkbox]),html.neon[data-design] select,html.neon[data-design] textarea {
+  color:rgb(var(--text));background-color:rgb(var(--surface-2)/.55)!important;border-color:rgb(var(--border))!important;
+}
+html.neon[data-design] input:focus-visible,html.neon[data-design] textarea:focus-visible {box-shadow:0 0 0 3px rgb(var(--primary)/.12)!important}
+html.neon[data-design] .vg-logo i {background:var(--button-gradient);color:white;box-shadow:0 5px 18px var(--design-glow)}
+html.neon[data-design] .vg-pills {background:rgb(var(--surface)/.6);border-color:var(--glass-line)}
+html.neon[data-design] .vg-ind {background:var(--design-icon);box-shadow:inset 0 0 0 1px var(--design-line);border-radius:17px}
+html.neon[data-design] .tabbar {background:var(--design-nav);border-color:var(--glass-line);box-shadow:0 10px 36px #00000016;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);height:72px;padding:7px;border-radius:26px}
+html.neon[data-design] .tabbar a {font-size:10px;gap:4px;min-height:44px}
+html.neon[data-design] .tabbar a.on {color:rgb(var(--primary))}
+html.neon[data-design] .tabbar a.on svg {color:rgb(var(--primary));filter:none}
+html.neon[data-design='arctic-glass'] .tabbar {box-shadow:0 8px 32px #4872ab20}
+html.neon[data-design] button.bg-gradient-to-br {background-image:var(--button-gradient);color:rgb(var(--primary-fg));box-shadow:0 8px 23px -10px var(--design-glow),inset 0 1px 0 #ffffff26}
+html.neon[data-design] .orbit-top {margin-bottom:20px}
+html.neon[data-design] .orbit-wordmark {font-size:22px;letter-spacing:.16em;line-height:1.2}
+.design-edition {font-size:9px;text-transform:uppercase;letter-spacing:.22em;color:rgb(var(--text-muted));margin-top:6px;font-weight:700}
+html.neon[data-design] .orbit-avatar {width:44px;height:44px;background:var(--design-icon);border-color:var(--design-line);color:rgb(var(--primary))}
+.signature-hero {position:relative;isolation:isolate;min-width:0;padding:0 0 8px}
+.signature-hero-copy {position:relative;z-index:2;margin:0 2px 20px}
+.signature-hero-copy h1 {font-size:clamp(26px,6.8vw,38px);line-height:1.2;letter-spacing:-.05em;font-weight:800;margin:10px 0 12px;overflow-wrap:anywhere}
+.signature-hero-copy h1 span {color:rgb(var(--primary))}
+.signature-hero-copy .hero-description {color:rgb(var(--text-muted));font-size:13px;line-height:1.8;margin-top:12px}
+html.neon[data-design] .orbit-art {height:195px;margin:-14px -16px -12px}
+html.neon[data-design] .live-orbit .live-orbit-image img {object-fit:contain;mask-image:radial-gradient(ellipse,#000 43%,transparent 73%)}
+html.neon[data-design] .live-orbit-image {inset:-25px -10px}
+html.neon[data-design] .orbit-cta {background:var(--button-gradient);color:#fff;min-height:60px;border:1px solid #ffffff24;border-radius:20px;box-shadow:0 12px 32px -16px var(--design-glow),inset 0 1px 0 #ffffff38;letter-spacing:-.02em;font-size:14px;position:relative;overflow:hidden}
+.signature-cta-icon {width:26px;height:26px;padding:4px;background:#ffffffeb;color:#6941ce;border-radius:50%;flex-shrink:0}
+html.neon[data-design='arctic-glass'] .signature-cta-icon {color:#245cbf}
+html.neon[data-design] .orbit-caption {color:rgb(var(--text-muted));font-size:10px;margin-top:11px}
+.signature-membership {display:flex;align-items:center;gap:12px;min-height:65px;border:1px solid var(--glass-line);background:var(--card-fill);padding:12px 15px;border-radius:19px;margin-bottom:12px}
+.signature-membership b {font-size:14px;font-weight:700;display:block}
+.signature-membership div>span {display:block;margin-top:3px;font-size:11px;color:rgb(var(--text-muted))}
+.signature-icon {width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;border-radius:13px;background:var(--design-icon);color:rgb(var(--primary))}
+.signature-icon svg {width:21px;height:21px}
+html.neon[data-design] .orbit-row,html.neon[data-design] .orbit-stat {border-color:var(--glass-line);background:var(--card-fill);box-shadow:var(--card-shadow);border-radius:22px}
+html.neon[data-design] .orbit-row {padding:15px;gap:12px;min-height:76px}
+html.neon[data-design] .orbit-row b {font-size:14px;font-weight:700}
+html.neon[data-design] .orbit-row+.orbit-row {margin-top:9px}
+html.neon[data-design] .orbit-stat {padding:17px 13px;gap:10px;min-height:88px}
+html.neon[data-design] .orbit-stat b {font-size:13px;overflow-wrap:anywhere}
+html.neon[data-design] .orbit-stat svg {width:21px}
+html.neon[data-design] .orbit-grid {gap:10px}
+.signature-locations {padding-top:15px}
+html.neon[data-design] .orbit-section-title {font-size:17px}
+html.neon[data-design] .orbit-section-title a {display:flex;align-items:center;min-height:44px}
+html.neon[data-design] .orbit-gift {background:linear-gradient(120deg,var(--design-icon),transparent),var(--card-fill);padding:22px;border-radius:23px;border-color:var(--design-line)}
+html.neon[data-design] .orbit-help {background:var(--design-wash);border-color:var(--design-line)}
+.signature-lte {border:1px solid var(--glass-line);background:var(--card-fill);padding:17px 15px;border-radius:22px;box-shadow:var(--card-shadow)}
+.signature-lte-title {display:flex;align-items:center;gap:12px}
+.signature-lte-title>div {min-width:0;flex:1}
+.signature-lte-title b {font-size:14px;display:block}
+.signature-lte-title p {font-size:12px;color:rgb(var(--text-muted));margin-top:4px;line-height:1.6}
+.signature-lte-title>a {color:rgb(var(--primary));font-size:11px;font-weight:800;min-height:44px;display:flex;align-items:center;white-space:nowrap}
+.signature-lte-meter {height:5px;background:rgb(var(--primary)/.13);border-radius:10px;margin:13px 0 9px;overflow:hidden}
+.signature-lte-meter>div {height:100%;border-radius:10px;background:rgb(var(--primary));transition:width .5s}
+.signature-lte-meta {display:flex;justify-content:space-between;gap:10px;font-size:10px;line-height:1.7;color:rgb(var(--text-muted))}
+.signature-lte details {margin-top:7px;font-size:11px;line-height:1.7;color:rgb(var(--text-muted))}
+.signature-lte summary {min-height:32px;display:flex;align-items:center;cursor:pointer;color:rgb(var(--primary))}
+.signature-lte details p {margin-top:5px}
+/* Arctic has its own compact, airy hero instead of recolouring the dark artwork. */
+html.neon[data-design='arctic-glass'] .signature-hero {padding:24px 0 4px}
+html.neon[data-design='arctic-glass'] .signature-hero-copy {min-height:170px;display:flex;flex-direction:column;align-items:flex-start;margin:0 0 7px;max-width:54%}
+html.neon[data-design='arctic-glass'] .signature-hero-copy h1 {font-size:clamp(25px,6.8vw,35px);max-width:250px;margin:9px 0 14px}
+html.neon[data-design='arctic-glass'] .signature-hero-copy h1 span {color:rgb(var(--text))}
+html.neon[data-design='arctic-glass'] .signature-hero-copy .orbit-kicker {font-size:8px;letter-spacing:.15em}
+html.neon[data-design='arctic-glass'] .signature-membership {background:transparent;border:0;box-shadow:none;margin-top:-17px;margin-bottom:10px;padding:8px 0;min-height:50px;position:relative;z-index:2;max-width:70%}
+html.neon[data-design='arctic-glass'] .signature-membership .signature-icon {display:none}
+html.neon[data-design='arctic-glass'] .signature-membership b {font-size:13px}
+.arctic-art {position:absolute;right:-16px;top:0;width:50%;height:205px;z-index:0;pointer-events:none;overflow:hidden;isolation:isolate}
+.arctic-globe {width:100%;height:100%;position:relative;z-index:1;animation:arctic-float 11s ease-in-out infinite;transform-origin:50% 60%}
+.arctic-globe img,.arctic-globe svg {width:100%;height:100%;object-fit:contain}
+.arctic-wave {position:absolute;width:180%;height:70px;right:-10px;bottom:10px;border:1px solid #fff;border-radius:50%;background:linear-gradient(10deg,#b0d4ff22,#ffffff88);transform:rotate(-17deg);animation:arctic-wave 15s ease-in-out infinite;z-index:-1}
+.arctic-wave-two {bottom:-10px;right:-25px;opacity:.6;animation-delay:-7s;transform:rotate(-25deg)}
+.arctic-satellite {position:absolute;width:12px;height:12px;background:radial-gradient(circle at 30% 20%,#fff,#a4c9f6 70%);border:1px solid #fff;border-radius:50%;box-shadow:0 4px 12px #85b3ec33;animation:arctic-float 8s ease-in-out infinite}
+.arctic-satellite-one {top:24px;right:12px;animation-delay:-3s}.arctic-satellite-two{bottom:32px;left:12px;width:8px;height:8px;animation-delay:-5s}
+/* Plans: native radio controls, one clear next step, server-authoritative quote. */
+.signature-plans {max-width:920px;margin-inline:auto}
+.signature-addons-link {display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;color:rgb(var(--primary));font-size:12px;font-weight:700;border:1px solid var(--design-line);border-radius:15px;background:var(--design-wash)}
+.signature-plan-list {display:flex;flex-direction:column;gap:11px;min-width:0}
+.signature-plan {position:relative;display:flex;align-items:center;gap:13px;padding:20px 17px;min-height:94px;border-radius:23px;border:1px solid var(--glass-line);background:var(--card-fill);cursor:pointer;overflow:hidden}
+.signature-plan.is-selected {border-color:rgb(var(--primary)/.7);box-shadow:0 0 0 1px rgb(var(--primary)/.12),inset 0 0 35px rgb(var(--primary)/.06),0 0 24px -12px var(--design-glow)}
+html.neon[data-design='arctic-glass'] .signature-plan.is-selected {background:linear-gradient(135deg,#fafdff,#e3efff);border-color:#8bb7ff}
+.signature-plan:focus-within {outline:2px solid rgb(var(--primary));outline-offset:3px}
+.signature-plan-radio {width:22px;height:22px;border:1.5px solid rgb(var(--text-muted)/.7);border-radius:50%;flex-shrink:0;display:grid;place-items:center;transition:border-color .2s,background .2s}
+.is-selected .signature-plan-radio {border-color:rgb(var(--primary));background:rgb(var(--primary)/.2);box-shadow:0 0 12px rgb(var(--primary)/.15)}
+.signature-plan-radio>span {width:12px;height:12px;background:rgb(var(--primary));border-radius:50%;box-shadow:inset 0 1px 0 #ffffff55}
+.signature-plan-copy {display:flex;flex:1;min-width:0;flex-wrap:wrap;align-items:center;gap:5px 8px}
+.signature-plan-title {font-size:17px;font-weight:800;letter-spacing:-.035em;overflow-wrap:anywhere;width:100%}
+.signature-plan-description {font-size:11px;line-height:1.6;color:rgb(var(--text-muted));width:100%;overflow-wrap:anywhere}
+.signature-plan-copy>span:last-child:not(.signature-plan-description):not(.signature-plan-title) {font-size:9px;padding:2px 8px}
+.signature-plan-price {display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;position:relative;z-index:1;max-width:45%}
+.signature-plan-price b {font-size:21px;letter-spacing:-.05em;line-height:1.3;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.signature-plan-price>span {font-size:10px}
+.signature-discount {color:rgb(var(--primary));background:var(--design-icon);padding:3px 7px;border-radius:8px;font-weight:800}
+.signature-plan-summary {margin-top:18px;min-width:0}
+.signature-included {padding:18px 20px;background:var(--design-wash);border:1px solid var(--design-line);border-radius:22px;margin-bottom:14px}
+.signature-included>div:not(.orbit-kicker) {display:flex;align-items:center;gap:10px;font-size:12px;line-height:1.7;margin-top:9px;color:rgb(var(--text-muted))}
+.signature-included svg {width:16px;height:16px;color:rgb(var(--primary));flex-shrink:0}
+.signature-plan-note {display:flex;gap:12px;align-items:center;padding:14px 4px;color:rgb(var(--primary));font-size:12px;line-height:1.6}
+.signature-plan-note span {display:block;margin-top:3px;color:rgb(var(--text-muted));font-size:10px}
+.signature-plan-total {display:flex;justify-content:space-between;gap:15px;padding:15px 3px 19px;font-size:13px;color:rgb(var(--text-muted))}
+.signature-plan-total b {color:rgb(var(--text));font-size:21px;letter-spacing:-.04em}
+.signature-purchase {border-radius:19px!important;gap:12px!important;font-weight:800!important}
+html.neon[data-design] .orbit-announcement {border-radius:18px;font-size:12px;text-align:left;border-color:var(--design-line);background:var(--design-wash);line-height:1.8}
+html.neon[data-design] .orbit-promo {background:linear-gradient(125deg,var(--design-icon),transparent),rgb(var(--surface));border-color:var(--design-line);border-radius:22px}
+html.neon[data-design='arctic-glass'] .orbit-announcement:before,html.neon[data-design='arctic-glass'] .orbit-plan-halo {background:radial-gradient(ellipse,#75aaff22,transparent 65%)}
+html.neon[data-design='arctic-glass'] .orbit-promo-sheen,html.neon[data-design='arctic-glass'] .orbit-plan-shine {background:linear-gradient(110deg,transparent 25%,#fff9 45%,transparent 65%)}
+html.neon[data-design] .orbit-promo-value {font-size:19px}
+html.neon[data-design] .orbit-segment button {min-height:44px}
+html.neon[data-design] .signature-home a,html.neon[data-design] button {-webkit-tap-highlight-color:transparent}
+@keyframes arctic-float {0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+@keyframes arctic-wave {0%,100%{transform:translateX(0) rotate(-17deg)}50%{transform:translateX(-10px) rotate(-11deg)}}
+@media (hover:hover) {
+  .signature-plan:hover {border-color:rgb(var(--primary)/.6)}
+  .signature-membership:hover,.orbit-stat:hover {border-color:var(--design-line)}
+  html.neon[data-design] .orbit-cta:hover {box-shadow:0 12px 32px -12px var(--design-glow),inset 0 1px 0 #ffffff38;filter:brightness(1.05)}
+}
+@media (min-width:768px) {
+  html.neon[data-design] .orbit-art {height:290px;margin-top:-12px}
+  html.neon[data-design] .orbit-home-grid {grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:42px;align-items:start}
+  .signature-hero {position:sticky;top:100px}
+  .signature-plan-layout {display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:26px;align-items:start}
+  .signature-plan-summary {margin-top:0;position:sticky;top:100px}
+  .signature-plan {min-height:110px;padding:23px 20px}
+  html.neon[data-design='arctic-glass'] .signature-hero {padding-top:40px}
+  html.neon[data-design='arctic-glass'] .signature-hero-copy {min-height:230px}
+  .arctic-art {height:275px;top:8px}
+}
+@media (max-width:365px) {
+  .signature-plan {padding:17px 13px;gap:10px}.signature-plan-title{font-size:15px}.signature-plan-price b{font-size:19px}
+  html.neon[data-design] .orbit-cta {font-size:12px;gap:8px;padding-inline:10px}
+  html.neon[data-design] .orbit-stat {padding:15px 11px;gap:8px}
+  .signature-lte-title {gap:9px}.signature-lte-title>a {font-size:10px}
+}
+@media (prefers-reduced-motion:reduce) {
+  .arctic-globe,.arctic-wave,.arctic-satellite {animation:none!important;transform:none!important}
+  .signature-lte-meter>div {transition:none}
+}
+
+.signature-plan-control {position:absolute;inset:0;z-index:3;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+
+html.neon[data-design='arctic-glass'] .signature-hero-copy h1 span {display:block}
+html.neon[data-design='arctic-glass'] .signature-hero-copy .orbit-kicker {max-width:145px;line-height:1.7}
+.signature-included {padding:0 17px}
+.signature-included summary {display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:50px;font-size:12px;font-weight:700;color:rgb(var(--text-muted));cursor:pointer;list-style:none}
+.signature-included summary::-webkit-details-marker {display:none}
+.signature-included summary>span {font-size:20px;font-weight:500;color:rgb(var(--primary))}
+.signature-included[open] {padding-bottom:17px}
+.signature-included[open] summary>span {transform:rotate(45deg)}
+.signature-plan-note {padding:8px 4px 17px}
+@media (max-width:767px) {.signature-plan {min-height:88px;padding:17px 16px}}
+
+html.neon[data-design] button[aria-label="Закрыть"] {min-height:44px;min-width:44px}
+.signature-lte summary {min-height:44px}

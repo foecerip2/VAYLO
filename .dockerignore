@@ -1,0 +1,18 @@
+# Не отправлять в контекст сборки секреты, данные и артефакты
+.git
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+**/*.env
+deploy/.env
+deploy/*.env
+deploy/.*.env
+deploy/caddy.d
+deploy/data
+backups
+CREDENTIALS.txt
+**/dump.rdb
+**/*.log
+**/coverage
+docs
