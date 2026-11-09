@@ -1,0 +1,32 @@
+feature,area,priority,original,clone,notes
+Sign in with email Google Apple,onboarding,must,yes,no,
+Watchlist with live prices,watchlist,must,yes,no,
+Multiple watchlists and sections,watchlist,should,yes,no,limit 30 symbols on free
+Symbol search across exchanges,search,must,yes,no,needs licensed symbol master
+Symbol screen with overview and session status,symbol,must,yes,no,
+Candlestick chart with intervals,chart,must,yes,no,
+Technical indicators (standard set),chart,must,yes,no,write fresh
+Indicators per chart limit by plan,chart,should,yes,no,
+Drawing tools (trendline fib),chart,must,yes,no,
+Drawing 45 degree snap,chart,could,yes,no,
+Chart layouts saved to cloud,chart,should,yes,no,
+Multiple charts per tab,chart,could,yes,no,tablet
+Bar replay,chart,could,yes,no,
+Price alerts cloud-evaluated,alerts,must,yes,no,
+Alert delivery push email webhook,alerts,must,yes,no,
+Alert list and management,alerts,must,yes,no,
+Alert caps by plan,alerts,should,yes,no,
+News feed per symbol,news,should,yes,no,licensed news
+Economic earnings dividends calendar,news,should,yes,no,
+Mobile screener,markets,should,yes,no,
+Extended hours pre/post market,symbol,should,yes,no,
+Ideas feed,community,could,yes,no,
+Subscription tiers with trial,payments,must,yes,no,Play Billing
+Home screen widgets,widgets,could,yes,no,
+Paper trading,trading,could,yes,no,deferred
+Notifications screen,menu,could,yes,no,
+Real-time exchange data,data,skip,yes,skip,licensed per exchange
+Broker integrations,trading,skip,yes,skip,regulated partner deals
+Pine Script editor and library,chart,skip,yes,skip,their IP
+Community content and followers,community,skip,yes,skip,their network
+Published scripts marketplace,community,skip,yes,skip,their network
