@@ -42,6 +42,8 @@ export async function requireUser(req: FastifyRequest, opts: { gate?: boolean } 
     const v = await verifyToken(t, 'user');
     if (!v) throw unauthorized('Сессия истекла, войдите заново');
     const [u] = await sql()<UserRow[]>`select * from users where id = ${v.sub}`;
+    // пароль сменили или сбросили — прежние токены больше не действуют (токены без ep считаются эпохой 0)
+    if (u && (v.ep ?? 0) !== (u.session_epoch ?? 0)) throw unauthorized('Сессия завершена — войдите снова');
     user = u;
   }
   if (!user) throw unauthorized();

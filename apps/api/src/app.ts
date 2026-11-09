@@ -10,6 +10,7 @@ import { HttpError } from './lib/errors.js';
 import { verifyToken } from './lib/jwt.js';
 import { RemnawaveError, RW_USER_MESSAGE } from './services/remnawave.js';
 import { adminRoutes } from './routes/admin/index.js';
+import { emailAuthRoutes } from './routes/emailAuth.js';
 import { publicRoutes } from './routes/public.js';
 import { webhookRoutes } from './routes/webhooks.js';
 
@@ -93,6 +94,7 @@ export async function buildApp(opts: { logger?: boolean } = {}): Promise<Fastify
   await app.register(
     async (v1) => {
       await v1.register(publicRoutes);
+      await v1.register(emailAuthRoutes);
       await v1.register(webhookRoutes);
       await v1.register(supportRoutes);
       await v1.register(adminRoutes, { prefix: '/admin' });

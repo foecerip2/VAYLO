@@ -68,6 +68,9 @@ export interface MeDTO {
   avatarUrl?:string|null;
   id: string;
   tgId: number | null;
+  /** Вход по почте и паролю (Android-приложение): почта аккаунта и наличие пароля */
+  email?: string | null;
+  hasPassword?: boolean;
   username: string | null;
   firstName: string | null;
   balance: number;
@@ -136,6 +139,8 @@ export interface GateDTO {
   ok: boolean;
   text: string;
   chats: GateChatDTO[];
+  /** аккаунт по почте без Telegram: шлюз включён, а проверить подписку не на чем — нужно привязать Telegram */
+  needTelegram?: boolean;
 }
 
 export interface ReferralStatsDTO {

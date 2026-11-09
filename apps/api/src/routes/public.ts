@@ -146,7 +146,7 @@ export async function publicRoutes(app: FastifyInstance) {
     }
     const ref = r.startParam?.startsWith('ref_') ? r.startParam.slice(4) : null;
     const user = await upsertTelegramUser(r.user, ref);
-    return { accessToken: await signUserToken(user.id) };
+    return { accessToken: await signUserToken(user.id, user.session_epoch) };
   });
 
   // Вход на сайт через бота: сайт получает токен, пользователь подтверждает его в боте
@@ -165,7 +165,8 @@ export async function publicRoutes(app: FastifyInstance) {
     if (!l) return { status: 'expired' as const };
     if (!l.user_id) return { status: 'pending' as const };
     await sql()`delete from auth_links where token = ${token}`;
-    return { status: 'ok' as const, accessToken: await signUserToken(l.user_id) };
+    const [lu] = await sql()<{ session_epoch: number }[]>`select session_epoch from users where id = ${l.user_id}`;
+    return { status: 'ok' as const, accessToken: await signUserToken(l.user_id, lu?.session_epoch ?? 0) };
   });
 
   app.post('/internal/tglink/confirm', async (req) => {

@@ -71,13 +71,16 @@ export async function toMe(u: UserRow): Promise<MeDTO> {
     id: u.id,
     avatarUrl: await avatarData(u.id),
     tgId: u.tg_id,
+    email: u.email,
+    hasPassword: Boolean(u.password_hash),
     username: u.username,
     firstName: u.first_name,
     balance: u.balance,
     referralCode: u.referral_code,
     discountPct: u.discount_pct,
     checkinStreak: u.checkin_streak,
-    trialAvailable: trial.enabled && !u.trial_used && !trialState.has_sub && !trialState.blocked,
+    // без Telegram пробного периода нет: защита от повторных пробных по tg_id и проверка канала работают только с ним
+    trialAvailable: trial.enabled && u.tg_id != null && !u.trial_used && !trialState.has_sub && !trialState.blocked,
     subscription: await getSubscriptionDTO(u),
   };
 }

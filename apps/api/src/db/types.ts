@@ -25,6 +25,10 @@ export interface UserRow {
   signup_bonus_done: boolean;
   referral_mode: 'days' | 'balance';
   ref_balance: number;
+  password_hash: string | null;
+  session_epoch: number;
+  failed_logins: number;
+  locked_until: Date | null;
 }
 
 export interface PlanRow {

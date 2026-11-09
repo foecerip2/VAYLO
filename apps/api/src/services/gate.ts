@@ -15,6 +15,7 @@ export interface GateStatus {
   ok: boolean;
   text: string;
   chats: GateChat[];
+  needTelegram?: boolean;
 }
 
 const OK_TTL_MS = 10 * 60_000;
@@ -53,7 +54,11 @@ export async function gateStatus(user: UserRow, opts: { force?: boolean } = {}):
   const cfg = await getSettings('gate');
   const chatsCfg = cfg.chats.filter((c) => c.chat);
   const none: GateStatus = { required: false, ok: true, text: cfg.text, chats: [] };
-  if (!cfg.enabled || cfg.mode !== 'hard' || !chatsCfg.length || !user.tg_id) return none;
+  if (!cfg.enabled || cfg.mode !== 'hard' || !chatsCfg.length) return none;
+  if (!user.tg_id) {
+    // аккаунт по почте без Telegram не может подтвердить подписку на канал: просим привязать Telegram, а не пропускаем мимо шлюза
+    return user.password_hash ? { required: true, ok: false, text: 'Привяжите Telegram в профиле, чтобы продолжить', chats: [], needTelegram: true } : none;
+  }
   if (await isTgAdmin(user.tg_id)) return none;
 
   const cached = !opts.force && user.channel_ok_at && Date.now() - user.channel_ok_at.getTime() < OK_TTL_MS;
@@ -75,7 +80,7 @@ export async function gateStatus(user: UserRow, opts: { force?: boolean } = {}):
 
 export async function enforceGate(user: UserRow): Promise<void> {
   const g = await gateStatus(user);
-  if (!g.ok) throw new HttpError(403, g.text || 'Подпишитесь на канал', 'subscribe_required');
+  if (!g.ok) throw new HttpError(403, g.text || 'Подпишитесь на канал', g.needTelegram ? 'telegram_required' : 'subscribe_required');
 }
 
 /**

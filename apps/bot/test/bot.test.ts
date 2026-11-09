@@ -73,6 +73,7 @@ beforeAll(async () => {
     if (u === '/contests/join') return { json: (state as any).join ?? { ok: true, contest: { title: 'Розыгрыш', prize: '7 дн. подписки', endsAt: new Date(Date.now() + 86400000).toISOString() } } };
     if (u === '/contests') return { json: [{ code: 'abc123', title: 'Розыгрыш', prize: '7 дн. подписки', endsAt: new Date(Date.now() + 86400000).toISOString(), entries: 5 }] };
     if (u === '/internal/tglink/confirm') return { json: { ok: true } };
+    if (u === '/internal/account-action/confirm') return (state as any).actionError ? { status: (state as any).actionError.status, json: { error: { message: 'x', code: (state as any).actionError.code } } } : { json: { purpose: r.body.token.startsWith('lnk') ? 'tg_link' : 'pw_reset' } };
     return { status: 404, json: { error: { message: 'nf' } } };
   });
   bot = createBot({ token: '1:T', apiUrl: core.url, internalKey: 'k', appUrl: 'https://app.example.test', apiRoot: tg.url, gateCacheMs: 0, botInfo: { id: 1, is_bot: true, first_name: 'B', username: 'test_bot', can_join_groups: true, can_read_all_group_messages: false, supports_inline_queries: false, can_connect_to_business: false, has_main_web_app: false } as any });
@@ -142,6 +143,42 @@ describe('бот', () => {
     const c = core.calls.find((x) => x.url.endsWith('/internal/tglink/confirm'))!;
     expect(c.body).toEqual({ token: 'abcdefghijklmnop' });
     expect(lastText()).toContain('Вход выполнен');
+  });
+
+  it('/start link_ и reset_ сначала спрашивают и сами ничего не подтверждают', async () => {
+    await bot.handleUpdate(message('/start link_lnkabcdefghijkl') as any);
+    expect(lastText()).toContain('Привязать этот Telegram');
+    expect(core.calls.some((c) => c.url.endsWith('/internal/account-action/confirm') || c.url.endsWith('/me'))).toBe(false);
+    expect(buttons().find((x) => x.text.includes('Привязать'))?.callback_data).toBe('ac:lnkabcdefghijkl');
+    await bot.handleUpdate(message('/start reset_rstabcdefghijkl') as any);
+    expect(lastText()).toContain('Сбросить пароль');
+    expect(core.calls.some((c) => c.url.endsWith('/internal/account-action/confirm') || c.url.endsWith('/me'))).toBe(false);
+    expect(buttons().find((x) => x.text.includes('Подтвердить сброс'))?.callback_data).toBe('ac:rstabcdefghijkl');
+    expect(Buffer.byteLength('ac:' + 'x'.repeat(40))).toBeLessThanOrEqual(64);
+  });
+
+  it('подтверждение привязки и сброса вызывает API от имени этого Telegram', async () => {
+    await bot.handleUpdate(callback('ac:lnkabcdefghijkl') as any);
+    const c = core.calls.find((x) => x.url.endsWith('/internal/account-action/confirm'))!;
+    expect(c.body).toEqual({ token: 'lnkabcdefghijkl' });
+    expect(JSON.parse(Buffer.from(c.headers['x-tg-user'], 'base64').toString()).id).toBe(1);
+    expect(lastText()).toContain('Telegram привязан');
+    await bot.handleUpdate(callback('ac:rstabcdefghijkl') as any);
+    expect(lastText()).toContain('Сброс подтверждён');
+  });
+
+  it('отказы сервера при подтверждении объясняются без технических деталей', async () => {
+    for (const [code, status, text] of [['tg_mismatch', 403, 'не привязан к этому аккаунту'], ['tg_taken', 409, 'другому аккаунту'], ['expired', 404, 'устарела']] as const) {
+      (state as any).actionError = { code, status };
+      await bot.handleUpdate(callback('ac:rstabcdefghijkl') as any);
+      expect(lastText()).toContain(text);
+    }
+  });
+
+  it('отмена привязки и сброса ничего не подтверждает', async () => {
+    await bot.handleUpdate(callback('ac_no') as any);
+    expect(core.calls.some((x) => x.url.endsWith('/internal/account-action/confirm'))).toBe(false);
+    expect(lastText()).toContain('Отменено');
   });
 
   it('вход на сайт: «Отмена» ничего не подтверждает', async () => {

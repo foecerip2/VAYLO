@@ -24,6 +24,8 @@ const esc = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt
 
 /** Telegram ограничивает callback_data 64 байтами */
 const CALLBACK_DATA_MAX = 64;
+/** токены привязки Telegram и сброса пароля (создаёт API, 24 символа base64url) */
+const ACTION_TOKEN = /^[A-Za-z0-9_-]{10,40}$/;
 
 const SUB_STATE_RU: Record<string, string> = { trial: 'пробный', active: 'активна', expiring: 'заканчивается', expired: 'истекла', none: 'нет' };
 
@@ -750,6 +752,19 @@ export function createBot(o: BotOptions) {
         );
         return;
       }
+      if (/^(?:link|reset)_/.test(payload)) {
+        // Подтверждение привязки Telegram / сброса пароля из приложения. Сам обработчик в /me не ходит: личность подтверждает API по токену и tg id.
+        const link = payload.startsWith('link_');
+        const token = payload.slice(link ? 5 : 6);
+        if (!ACTION_TOKEN.test(token)) return void (await ctx.reply('Ссылка некорректна. Запросите её в приложении ещё раз.', { reply_markup: menuRow() }));
+        await ctx.reply(
+          link
+            ? '🔗 <b>Привязать этот Telegram к аккаунту VAYLO?</b>\n\nПосле привязки можно будет сбросить пароль через бота и получить пробный период.\n\nЕсли вы не запрашивали привязку в приложении, проигнорируйте это сообщение.'
+            : '🔐 <b>Сбросить пароль аккаунта VAYLO?</b>\n\nПосле подтверждения вернитесь в приложение и задайте новый пароль. Пароль в этот чат присылать не нужно.\n\nЕсли вы не запрашивали сброс, проигнорируйте это сообщение.',
+          { parse_mode: 'HTML', reply_markup: new InlineKeyboard().text(link ? '✅ Привязать' : '✅ Подтвердить сброс', `ac:${token}`).row().text('Отмена', 'ac_no'), link_preview_options: { is_disabled: true } },
+        );
+        return;
+      }
       // регистрируем пользователя (и реферала) через любой запрос
       const ref = payload.startsWith('ref_') ? payload.slice(4) : null;
       await api.call(ctx.from!, 'GET', '/me', undefined, ref ? { 'x-ref-code': ref } : {});
@@ -776,6 +791,33 @@ export function createBot(o: BotOptions) {
     guard(ctx, async () => {
       await ack(ctx);
       await ctx.editMessageText('Вход отменён. Если это были не вы — ничего делать не нужно.').catch(() => ctx.reply('Вход отменён.'));
+    }),
+  );
+  /** Сообщения для известных отказов сервера при подтверждении привязки / сброса */
+  const ACTION_ERRORS: Record<string, string> = {
+    expired: 'Ссылка устарела. Запросите её в приложении ещё раз.',
+    tg_taken: 'Этот Telegram уже привязан к другому аккаунту VAYLO, поэтому привязать его сюда нельзя. Если нужна помощь, напишите в поддержку.',
+    already_linked: 'К этому аккаунту уже привязан Telegram.',
+    tg_mismatch: 'Этот Telegram не привязан к этому аккаунту. Если не получается сбросить пароль, напишите в поддержку.',
+  };
+  async function confirmAction(ctx: Context, token: string | undefined) {
+    await ack(ctx);
+    const done = (text: string) => ctx.editMessageText(text, { parse_mode: 'HTML' }).catch(() => ctx.reply(text, { parse_mode: 'HTML' }));
+    if (!token || !ACTION_TOKEN.test(token)) return void (await done(ACTION_ERRORS.expired!));
+    try {
+      const r = await api.call<{ purpose: 'tg_link' | 'pw_reset' }>(ctx.from!, 'POST', '/internal/account-action/confirm', { token });
+      await done(r.purpose === 'tg_link' ? '✅ <b>Telegram привязан.</b> Вернитесь в приложение.' : '✅ <b>Сброс подтверждён.</b> Вернитесь в приложение и задайте новый пароль.');
+    } catch (e) {
+      const known = e instanceof ApiError ? ACTION_ERRORS[e.code ?? ''] : undefined;
+      if (known) return void (await done(esc(known)));
+      throw e;
+    }
+  }
+  bot.callbackQuery(/^ac:([A-Za-z0-9_-]{10,40})$/, (ctx) => guard(ctx, () => confirmAction(ctx, ctx.match[1])));
+  bot.callbackQuery('ac_no', (ctx) =>
+    guard(ctx, async () => {
+      await ack(ctx);
+      await ctx.editMessageText('Отменено. Если это были не вы, ничего делать не нужно.').catch(() => ctx.reply('Отменено.'));
     }),
   );
   bot.command('devices', (ctx) => guard(ctx, () => showDevices(ctx)));

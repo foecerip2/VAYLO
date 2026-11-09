@@ -4,8 +4,9 @@ import { config } from '../config.js';
 
 const key = () => createHash('sha256').update('vpn-jwt:' + config().APP_SECRET).digest();
 
-export async function signUserToken(userId: string): Promise<string> {
-  return new SignJWT({ typ: 'user' }).setProtectedHeader({ alg: 'HS256' }).setSubject(userId).setIssuedAt().setExpirationTime('30d').sign(key());
+/** epoch — эпоха сессий пользователя (users.session_epoch): смена или сброс пароля обнуляет все прежние токены */
+export async function signUserToken(userId: string, epoch = 0): Promise<string> {
+  return new SignJWT({ typ: 'user', ep: epoch }).setProtectedHeader({ alg: 'HS256' }).setSubject(userId).setIssuedAt().setExpirationTime('30d').sign(key());
 }
 
 export const ADMIN_TTL = { short: '12h', remember: '30d' } as const;

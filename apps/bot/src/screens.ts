@@ -10,7 +10,7 @@ export function screenNavigation(): MiddlewareFn<Context> {
     if (ctx.chat?.type !== 'private' || !ctx.from) return next();
     // Login confirmations are security notices, independent of navigation.
     const action = ctx.callbackQuery?.data ?? '';
-    if (/^(?:al:|alk:|al_no$)/.test(action) || /^\/start(?:@\w+)? auth_/.test(ctx.message?.text ?? '')) return next();
+    if (/^(?:al:|alk:|al_no$|ac:|ac_no$)/.test(action) || /^\/start(?:@\w+)? (?:auth|link|reset)_/.test(ctx.message?.text ?? '')) return next();
     const chatId = ctx.chat.id;
     const prior = pending.get(chatId) ?? Promise.resolve();
     let release!: () => void;

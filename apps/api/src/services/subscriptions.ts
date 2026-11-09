@@ -157,8 +157,10 @@ export async function grantAccess(tx: TxSql, userId: string, spec: GrantSpec): P
 export async function startTrial(userId: string): Promise<GrantResult> {
   const trial = await getSettings('trial');
   if (!trial.enabled) throw conflict('Пробный период отключён', 'trial_disabled');
+  const [u0] = await sql()<UserRow[]>`select * from users where id = ${userId}`;
+  // без Telegram пробного периода нет: от повторных пробных защищает метка по tg_id, а подписку на канал проверить не на чем
+  if (u0 && u0.tg_id == null) throw conflict('Для пробного периода привяжите Telegram', 'telegram_required');
   if (trial.require_channel) {
-    const [u0] = await sql()<UserRow[]>`select * from users where id = ${userId}`;
     if (u0 && !(await passesChannelCheck(u0)) && !(await isTgAdmin(u0.tg_id))) throw conflict('Для пробного периода подпишитесь на канал', 'subscribe_required');
   }
   await assertNotMaintenance();
