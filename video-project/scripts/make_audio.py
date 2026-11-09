@@ -115,8 +115,13 @@ with wave.open(str(ROOT / "public" / "music.wav"), "wb") as w:
     w.setframerate(SR)
     w.writeframes(pcm.tobytes())
 
-# voice envelope, one value per video frame (30 fps)
-with wave.open(str(ROOT / "public" / "voice.wav"), "rb") as w:
+# voice envelope (drives the radial waveform), one value per video frame (30 fps).
+# usage: python3 scripts/make_audio.py [voice.wav]  -- keeps the old envelope if no voice is given
+import sys
+if len(sys.argv) < 2:
+    print("music.wav written (envelope untouched)")
+    raise SystemExit
+with wave.open(sys.argv[1], "rb") as w:
     vsr = w.getframerate()
     v = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(float)
 spf = vsr // 30
