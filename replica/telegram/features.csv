@@ -1,0 +1,39 @@
+feature,area,priority,original,clone,notes
+Sign in by phone with code,onboarding,must,yes,no,SMS provider cost
+Profile name and photo,onboarding,must,yes,no,
+Chat list sorted by recent activity,chat list,must,yes,no,
+Unread badges and mute,chat list,must,yes,no,
+Pinned and archived chats,chat list,should,yes,no,
+Chat folders,chat list,could,yes,no,
+1:1 text messaging in realtime,messaging,must,yes,no,
+Delivery and read status,messaging,must,yes,no,
+Typing indicator,messaging,should,yes,no,
+Reply forward edit delete,messaging,must,yes,no,
+Reactions,messaging,should,yes,no,
+Photos videos and files,media,must,yes,no,resumable uploads
+Voice messages,media,should,yes,no,
+Link previews,media,could,yes,no,
+Group chats with admin permissions,groups,must,yes,no,start with small groups
+Large groups up to 200k,groups,skip,yes,skip,infrastructure scale
+Channels with view counters,channels,should,yes,no,
+Search chats and messages,search,must,yes,no,
+Contacts import,contacts,should,yes,no,permission and privacy
+Push notifications,notifications,must,yes,no,FCM
+Per-chat notification settings,notifications,should,yes,no,
+Multi-device cloud sync,sync,must,yes,no,hardest part
+Active sessions list and terminate,security,should,yes,no,
+Two-step verification,security,should,yes,no,
+Privacy settings (phone last seen),security,must,yes,no,
+Scheduled messages,messaging,could,yes,no,
+Polls,messaging,could,yes,no,
+Auto-delete timers,messaging,could,yes,no,
+Dark theme,settings,could,yes,no,
+Secret chats end-to-end,security,could,yes,no,separate crypto design
+Voice and video calls,calls,skip,yes,skip,deferred
+Stories,social,skip,yes,skip,deferred
+Bots and Mini Apps,platform,skip,yes,skip,their platform
+Stickers and GIF library,content,skip,yes,skip,licensed content
+Premium and Stars economy,payments,skip,yes,skip,their economy
+Live streams,calls,skip,yes,skip,infrastructure
+AI features,ai,skip,yes,skip,deferred
+Telegram network and users,network,skip,yes,skip,not clonable
