@@ -1,5 +1,8 @@
 # Plan: Серверный вход по почте и паролю (для Android-приложения VAYLO)
 
+## Status
+Выполнено (2026-11-09): миграция 030, сервис и маршруты, шлюз и пробный период, бот, документ API. Проверки: `pnpm -r typecheck`; тесты API 431 из 431 (22 новых); тесты бота 56 из 56 (4 новых). Отклонения от плана: статус сброса и привязки возвращает `ok` вместо `confirmed`; при привязке Telegram пустая запись, которую бот создаёт на первое сообщение, объединяется с аккаунтом (иначе привязка всегда падала бы), запись с данными по-прежнему блокирует привязку.
+
 ## Summary
 Добавить в API VAYLO вход клиентов по почте и паролю: регистрация, вход, привязка почты к существующему Telegram-аккаунту, привязка Telegram к аккаунту по почте, смена пароля и сброс пароля через Telegram-бота (писем нет). Сервер уже умеет работать с пользователями без Telegram, поэтому основной объём: пароль и вход, защита от подбора и от злоупотреблений, два новых сценария в боте.
 
@@ -121,7 +124,7 @@ create index account_actions_expires_idx on account_actions (expires_at);
 | `POST /auth/email/register` | публичный, лимит 10/час на IP | `{email, password}` → `{accessToken}`; 409 `email_taken` |
 | `POST /auth/email/login` | публичный, лимит 10/мин на IP + блокировка аккаунта | `{email, password}` → `{accessToken}`; 401 `invalid_credentials`; 429 `locked` |
 | `POST /auth/email/reset/start` | публичный, лимит 5/мин | `{email}` → `{token, url, expiresInSec}` (ответ одинаков для любой почты) |
-| `GET /auth/email/reset/:token` | публичный | → `{status: 'pending'\|'confirmed'\|'expired'}` |
+| `GET /auth/email/reset/:token` | публичный | → `{status: 'pending'\|'ok'\|'expired'}` |
 | `POST /auth/email/reset/complete` | публичный, лимит 10/мин | `{token, password}` → `{accessToken}`; токен одноразовый |
 | `POST /me/credentials` | пользователь | `{email, password}` — добавить вход по почте к Telegram-аккаунту; 409 если уже есть пароль или почта занята |
 | `POST /me/password` | пользователь | `{currentPassword, newPassword}` → `{accessToken}` (эпоха сессий растёт) |
