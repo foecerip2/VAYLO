@@ -10,7 +10,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 SR = 44100
-DUR = 30.0
+DUR = 32.0
 N = int(SR * DUR)
 rng = np.random.default_rng(7)
 
@@ -74,9 +74,9 @@ def pad(freq, dur):
 
 music = np.zeros(N)
 BEAT = 0.5  # 120 bpm
-HOOK_END = 2.9
-SCENES = [2.9, 5.5, 9.65, 16.1, 19.5, 24.9]
-STRIKES = [6.15, 7.65, 9.05]
+HOOK_END = 1.9
+SCENES = [1.9, 3.7, 9.0, 15.55, 19.95, 26.4]
+STRIKES = [4.85, 6.25, 8.4]
 
 # drums
 t = 0.0
@@ -91,7 +91,7 @@ for k, f in enumerate(chords * 4):
     add(music, k * 2.0, pad(f, 2.0), 0.22)
 # arpeggio from the code scene on
 penta = [220.0, 261.63, 329.63, 392.0, 440.0, 392.0, 329.63, 261.63]
-t, k = 9.65, 0
+t, k = 9.0, 0
 while t < DUR - 0.3:
     add(music, t, pluck(penta[k % len(penta)]), 0.12)
     t += BEAT / 2
@@ -115,19 +115,12 @@ with wave.open(str(ROOT / "public" / "music.wav"), "wb") as w:
     w.setframerate(SR)
     w.writeframes(pcm.tobytes())
 
-# voice envelope (drives the radial waveform), one value per video frame (30 fps).
-# usage: python3 scripts/make_audio.py [voice.wav]  -- keeps the old envelope if no voice is given
-import sys
-if len(sys.argv) < 2:
-    print("music.wav written (envelope untouched)")
-    raise SystemExit
-with wave.open(sys.argv[1], "rb") as w:
-    vsr = w.getframerate()
-    v = np.frombuffer(w.readframes(w.getnframes()), dtype=np.int16).astype(float)
-spf = vsr // 30
-frames = len(v) // spf
-env = np.array([np.sqrt(np.mean(v[i * spf : (i + 1) * spf] ** 2)) for i in range(frames)])
-env = env / env.max()
-env = np.concatenate([env, np.zeros(900 - len(env))])[:900]
+# envelope of the (code-made) music: drives the radial waveform in the "ЗВУК" scene
+spf = SR // 30
+frames = len(music) // spf
+env = np.array([np.sqrt(np.mean(music[i * spf : (i + 1) * spf] ** 2)) for i in range(frames)])
+env = env / np.percentile(env, 98)
+env = np.clip(env, 0, 1)
+env = np.concatenate([env, np.zeros(960 - len(env))])[:960]
 (ROOT / "src" / "envelope.json").write_text(json.dumps([round(float(x), 3) for x in env]))
 print("music.wav + envelope.json written")

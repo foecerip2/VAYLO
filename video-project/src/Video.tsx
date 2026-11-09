@@ -14,7 +14,7 @@ import envelope from "./envelope.json";
 import { PHRASES, SCENES } from "./timeline";
 
 const FPS = 30;
-export const TOTAL_FRAMES = 900;
+export const TOTAL_FRAMES = 960;
 const C = {
   bg: "#07070c",
   orange: "#ff7a45",
@@ -718,9 +718,9 @@ const WithoutScene: React.FC = () => {
   const f = useCurrentFrame();
   const t = f / FPS;
   const rows: Row[] = [
-    { name: "After Effects", appear: 0.0, strike: 0.7, icon: "Ae", color: C.violet },
-    { name: "Монтажёр", appear: 1.5, strike: 2.0, icon: "✂", color: C.cyan },
-    { name: "Клик мышкой", appear: 2.65, strike: 3.45, icon: "", color: C.lime },
+    { name: "After Effects", appear: 0.0, strike: 1.15, icon: "Ae", color: C.violet },
+    { name: "Монтажёр", appear: 1.55, strike: 2.55, icon: "✂", color: C.cyan },
+    { name: "Клик мышкой", appear: 2.85, strike: 4.7, icon: "", color: C.lime },
   ];
   const kick = rows.reduce((m, r) => {
     const d = t - r.strike;
@@ -1049,19 +1049,19 @@ const VoiceScene: React.FC<{ startFrame: number }> = ({ startFrame }) => {
           textShadow: `${hit ? 8 : 0}px 0 ${C.red}, ${hit ? -8 : 0}px 0 ${C.cyan}, 0 0 60px ${C.orange}88`,
         }}
       >
-        ГОЛОС
+        ЗВУК
       </div>
       <div
         style={{
           fontFamily: MONO,
           fontSize: 42,
           color: C.orange,
-          letterSpacing: 5,
+          letterSpacing: 3,
           margin: "14px 0 30px",
           opacity: title,
         }}
       >
-        СИНТЕЗ РЕЧИ · RU
+        МУЗЫКА · УДАРЫ · ПЕРЕХОДЫ
       </div>
       <div style={{ position: "relative", width: 640, height: 640, opacity: title }}>
         <div style={{ position: "absolute", inset: 0, transform: `rotate(${f * 1.5}deg)` }}>
@@ -1110,16 +1110,16 @@ const StepsScene: React.FC = () => {
   const f = useCurrentFrame();
   const t = f / FPS;
   const steps = [
-    { n: "01", title: "Сценарий", file: "script.md", icon: "≡", at: 0.1, color: C.cyan },
-    { n: "02", title: "Код", file: "Video.tsx", icon: "{ }", at: 0.7, color: C.violet },
-    { n: "03", title: "Озвучка", file: "voice.wav", icon: "♪", at: 1.3, color: C.orange },
-    { n: "04", title: "Рендер", file: "video.mp4", icon: "▶", at: 1.9, color: C.lime },
+    { n: "01", title: "Сценарий", file: "script.md", icon: "≡", at: 0.12, color: C.cyan },
+    { n: "02", title: "Код", file: "Video.tsx", icon: "{ }", at: 1.2, color: C.violet },
+    { n: "03", title: "Озвучка", file: "voice.wav", icon: "♪", at: 1.97, color: C.orange },
+    { n: "04", title: "Рендер", file: "video.mp4", icon: "▶", at: 2.91, color: C.lime },
   ];
   const head = pop(f, 0, 12, 160);
-  const pulse = t > 2.65 ? Math.exp(-(t - 2.65) * 6) : 0;
-  const done = pop(f, 4.0, 10, 160);
-  const fill = interpolate(t, [2.65, 4.0], [0, 1], clamp);
-  const check = interpolate(t, [4.1, 4.5], [0, 1], clamp);
+  const pulse = t > 3.94 ? Math.exp(-(t - 3.94) * 6) : 0;
+  const done = pop(f, 5.5, 10, 160);
+  const fill = interpolate(t, [3.94, 5.5], [0, 1], clamp);
+  const check = interpolate(t, [5.6, 6.0], [0, 1], clamp);
   return (
     <AbsoluteFill style={{ alignItems: "center" }}>
       <div
@@ -1236,7 +1236,7 @@ const StepsScene: React.FC = () => {
         </svg>
         ГОТОВО · video.mp4
       </div>
-      <Burst x={540} y={1330} start={sf(4.0)} count={40} seed="done" speed={80} size={18} life={30} colors={[C.lime, C.cyan, C.yellow, "#fff"]} />
+      <Burst x={540} y={1330} start={sf(5.5)} count={40} seed="done" speed={80} size={18} life={30} colors={[C.lime, C.cyan, C.yellow, "#fff"]} />
     </AbsoluteFill>
   );
 };
@@ -1259,19 +1259,19 @@ const CtaScene: React.FC = () => {
   const t = f / FPS;
   const q = pop(f, 0.1, 10, 150);
   const btnIn = pop(f, 1.0, 8, 150);
-  const u = interpolate(t, [1.5, 2.5], [0, 1], { ...clamp, easing: Easing.inOut(Easing.cubic) });
+  const u = interpolate(t, [1.4, 2.2], [0, 1], { ...clamp, easing: Easing.inOut(Easing.cubic) });
   const P0 = { x: 1010, y: 380 };
   const P1 = { x: 940, y: 1150 };
   const P2 = { x: 620, y: 1215 };
   const cx = (1 - u) ** 2 * P0.x + 2 * (1 - u) * u * P1.x + u ** 2 * P2.x;
   const cy = (1 - u) ** 2 * P0.y + 2 * (1 - u) * u * P1.y + u ** 2 * P2.y;
-  const clickAt = 2.6;
+  const clickAt = 2.3;
   const clicked = t >= clickAt;
-  const press = interpolate(t, [2.5, 2.6, 2.75], [1, 0.8, 1], clamp);
+  const press = interpolate(t, [2.2, 2.3, 2.45], [1, 0.8, 1], clamp);
   const ripple = interpolate(t, [clickAt, clickAt + 0.6], [0, 1], outCubic);
   const after = pop(f, clickAt, 9, 180);
   const glow = 40 + Math.sin(f / 4) * 25;
-  const chev = interpolate(t, [2.4, 2.7], [1, 0], clamp);
+  const chev = interpolate(t, [2.1, 2.4], [1, 0], clamp);
   return (
     <AbsoluteFill>
       {Array.from({ length: 30 }).map((_, i) => {
@@ -1388,7 +1388,7 @@ const CtaScene: React.FC = () => {
           fontFamily: MONO,
           fontSize: 36,
           color: "#9a9ab5",
-          opacity: interpolate(t, [3.1, 3.5], [0, 1], clamp),
+          opacity: interpolate(t, [2.9, 3.3], [0, 1], clamp),
         }}
       >
         единственный клик в этом видео
