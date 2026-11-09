@@ -1,0 +1,91 @@
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f3f5f7;
+  --color-border: #e1e5ea;
+  --color-border-input: #7a8591;
+  --color-text: #12161b;
+  --color-text-muted: #556070;
+  --color-accent: #0b6e6e;
+  --color-on-accent: #ffffff;
+  --color-bubble-in: #eef1f4;
+  --color-on-bubble-in: #12161b;
+  --color-bubble-out: #0b6e6e;
+  --color-on-bubble-out: #ffffff;
+  --color-meta-out: #d6efef;
+  --color-badge: #0b6e6e;
+  --color-on-badge: #ffffff;
+  --color-badge-muted: #5f6b7a;
+  --color-danger: #c62f2f;
+  --color-success: #1f7a4d;
+  --color-online: #1f7a4d;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #0f1419;
+  --color-surface: #18202a;
+  --color-border: #27313d;
+  --color-border-input: #7d8a99;
+  --color-text: #e8edf2;
+  --color-text-muted: #9aa7b5;
+  --color-accent: #4fd1c5;
+  --color-on-accent: #06201e;
+  --color-bubble-in: #1f2933;
+  --color-on-bubble-in: #e8edf2;
+  --color-bubble-out: #0f5f5f;
+  --color-on-bubble-out: #ffffff;
+  --color-meta-out: #bfe6e6;
+  --color-badge: #4fd1c5;
+  --color-on-badge: #06201e;
+  --color-badge-muted: #5f6b7a;
+  --color-danger: #ff7b7b;
+  --color-success: #5fd39a;
+  --color-online: #5fd39a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #0f1419;
+    --color-surface: #18202a;
+    --color-border: #27313d;
+    --color-border-input: #7d8a99;
+    --color-text: #e8edf2;
+    --color-text-muted: #9aa7b5;
+    --color-accent: #4fd1c5;
+    --color-on-accent: #06201e;
+    --color-bubble-in: #1f2933;
+    --color-on-bubble-in: #e8edf2;
+    --color-bubble-out: #0f5f5f;
+    --color-on-bubble-out: #ffffff;
+    --color-meta-out: #bfe6e6;
+    --color-badge: #4fd1c5;
+    --color-on-badge: #06201e;
+    --color-badge-muted: #5f6b7a;
+    --color-danger: #ff7b7b;
+    --color-success: #5fd39a;
+    --color-online: #5fd39a;
+  }
+}
+:root {
+  --font-sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-bubble: 18px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --text-xs: 12px/16px;
+  --text-sm: 14px/20px;
+  --text-base: 16px/22px;
+  --text-lg: 18px/24px;
+  --text-xl: 24px/30px;
+  --text-display: 32px/38px;
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 48px;
+  --motion-fast: 120ms; --motion-base: 200ms;
+}

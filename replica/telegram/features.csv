@@ -1,19 +1,19 @@
 feature,area,priority,original,clone,notes
-Sign in by phone with code,onboarding,must,yes,no,SMS provider cost
-Profile name and photo,onboarding,must,yes,no,
-Chat list sorted by recent activity,chat list,must,yes,no,
-Unread badges and mute,chat list,must,yes,no,
-Pinned and archived chats,chat list,should,yes,no,
+Sign in by phone with code,onboarding,must,yes,partial,"S01-S02 on fake data layer; no SMS, code is fixed in dev"
+Profile name and photo,onboarding,must,yes,partial,"name only, no photo"
+Chat list sorted by recent activity,chat list,must,yes,yes,"pinned first, then recency; skeleton, empty and offline states"
+Unread badges and mute,chat list,must,yes,partial,badges and muted style work; no UI to mute yet
+Pinned and archived chats,chat list,should,yes,partial,pinned sorting from seed data; no pin/archive UI
 Chat folders,chat list,could,yes,no,
-1:1 text messaging in realtime,messaging,must,yes,no,
-Delivery and read status,messaging,must,yes,no,
+1:1 text messaging in realtime,messaging,must,yes,partial,"fake in-memory layer, no real backend or realtime"
+Delivery and read status,messaging,must,yes,partial,sent/delivered ticks; read ticks not shown yet
 Typing indicator,messaging,should,yes,no,
 Reply forward edit delete,messaging,must,yes,no,
 Reactions,messaging,should,yes,no,
 Photos videos and files,media,must,yes,no,resumable uploads
 Voice messages,media,should,yes,no,
 Link previews,media,could,yes,no,
-Group chats with admin permissions,groups,must,yes,no,start with small groups
+Group chats with admin permissions,groups,must,yes,partial,group view with sender names only; no create or admin
 Large groups up to 200k,groups,skip,yes,skip,infrastructure scale
 Channels with view counters,channels,should,yes,no,
 Search chats and messages,search,must,yes,no,
@@ -27,7 +27,7 @@ Privacy settings (phone last seen),security,must,yes,no,
 Scheduled messages,messaging,could,yes,no,
 Polls,messaging,could,yes,no,
 Auto-delete timers,messaging,could,yes,no,
-Dark theme,settings,could,yes,no,
+Dark theme,settings,could,yes,partial,"tokens ready, no toggle UI"
 Secret chats end-to-end,security,could,yes,no,separate crypto design
 Voice and video calls,calls,skip,yes,skip,deferred
 Stories,social,skip,yes,skip,deferred
